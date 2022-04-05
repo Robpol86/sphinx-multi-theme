@@ -1,7 +1,7 @@
 """Tests."""
 import pytest
 
-from sphinx_multi_theme.multi_theme import Theme
+from sphinx_multi_theme.theme import Theme
 
 
 def test():
