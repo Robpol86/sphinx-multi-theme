@@ -24,7 +24,7 @@ pygments_style = "vs"
 
 # Options for HTML output.
 html_copy_source = False
-html_theme = MultiTheme(["sphinx_rtd_theme"])
+html_theme = MultiTheme(["sphinx_rtd_theme", "sphinx_rtd_theme"])
 
 
 # https://sphinxext-opengraph.readthedocs.io/en/latest/#options
