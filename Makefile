@@ -69,7 +69,7 @@ build:
 	poetry build -n -vvv
 
 docs/_build/html/index.html::
-	poetry run sphinx-build -n -W docs $(@D)
+	poetry run sphinx-build -T -n -W docs $(@D)
 	@echo Documentation available here: $@
 
 .PHONY: docs

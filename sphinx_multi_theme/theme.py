@@ -79,6 +79,12 @@ class MultiTheme:
         themes = [t for t in self.themes if t.is_active]
         return themes[0]
 
+    @property
+    def primary(self) -> Theme:
+        """Return the primary theme."""
+        themes = [t for t in self.themes if t.is_primary]
+        return themes[0]
+
     def set_subdir_attrs(self):
         """Set subdir attribute for every theme except the first one."""
         primary_theme = self.themes[0]
