@@ -12,7 +12,7 @@ Example output file structure:
     docs/_build/html/theme_classic/_static/jquery.js
     docs/_build/html/theme_classic/index.html
 """
-from typing import Dict, Union
+from typing import Dict, List, Tuple, Union
 
 from sphinx.application import Sphinx
 from sphinx.config import Config
@@ -31,14 +31,27 @@ def flatten_html_theme(_: Sphinx, config: Config):
     :param config: Sphinx configuration.
     """
     multi_theme_instance: Union[str, MultiTheme] = config["html_theme"]
+
+    # Noop if MultiTheme not used.
     try:
         primary_theme_name = multi_theme_instance.primary.name
     except AttributeError:
         log = logging.getLogger(__name__)
         log.warning("Sphinx config value for `html_theme` not a %s instance", MultiTheme.__name__)
-    else:
-        config["html_theme"] = primary_theme_name
-        config[CONFIG_NAME_INTERNAL_THEMES] = multi_theme_instance
+        return
+
+    # Update config.
+    config["html_theme"] = primary_theme_name
+    config[CONFIG_NAME_INTERNAL_THEMES] = multi_theme_instance
+
+    # Support ReadTheDocs hosted docs.
+    html_context_keys: List[Tuple[str, str]] = []
+    for top_level_key in ("html_context", "context"):
+        if top_level_key in config:
+            for key, value in config[top_level_key].items():
+                if value == multi_theme_instance:
+                    html_context_keys.append((top_level_key, key))
+                    config[top_level_key][key] = primary_theme_name
 
 
 def setup(app: Sphinx) -> Dict[str, str]:
