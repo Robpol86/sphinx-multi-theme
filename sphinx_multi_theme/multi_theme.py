@@ -62,7 +62,7 @@ def fork_and_flatten_html_theme(app: Sphinx, config: Config):
     log.info("%sEntering multi-theme build mode", LOGGING_PREFIX)
     for idx, theme in enumerate(multi_theme_instance):
         if not theme.is_primary:
-            log.info("%sBuilding docs with theme %s into %s", LOGGING_PREFIX, theme.name, theme.subdir)
+            log.info("%sBuilding docs with theme %r into directory %r", LOGGING_PREFIX, theme.name, theme.subdir)
             if fork():
                 # This is the child process.
                 multi_theme_instance.set_active(idx)
@@ -71,7 +71,7 @@ def fork_and_flatten_html_theme(app: Sphinx, config: Config):
                 for key in html_context_keys:
                     config["html_context"][key] = theme.name
                 return
-            log.info("%sDone with theme %s", LOGGING_PREFIX, theme.name)
+            log.info("%sDone with theme %r", LOGGING_PREFIX, theme.name)
     log.info("%sExiting multi-theme build mode", LOGGING_PREFIX)
 
 
