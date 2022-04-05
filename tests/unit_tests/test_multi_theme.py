@@ -68,6 +68,16 @@ def test_active():
         themes.set_active(3)
 
 
+def test_primary():
+    """Test."""
+    themes = MultiTheme(["a", "b", "c"])
+
+    assert themes[0].is_primary is True
+    assert themes[1].is_primary is False
+    assert themes[2].is_primary is False
+    assert themes.primary.name == "a"
+
+
 def test_subdir_attrs():
     """Test."""
     themes = MultiTheme(["a", "b", "c"])
