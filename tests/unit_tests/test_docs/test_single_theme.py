@@ -6,6 +6,9 @@ from pathlib import Path
 from typing import Optional
 
 import pytest
+from sphinx.testing.util import SphinxTestApp
+
+from sphinx_multi_theme.multi_theme import CONFIG_NAME_INTERNAL_THEMES, MultiTheme
 
 EXPECTED_NUM_FILES = 23
 IGNORE = DEFAULT_IGNORES + [".buildinfo"]
@@ -46,7 +49,7 @@ def directory_compare(left: Optional[Path] = None, right: Optional[Path] = None,
 
 
 @pytest.mark.parametrize("testroot", [pytest.param(r, marks=pytest.mark.sphinx("html", testroot=r)) for r in ROOTS])
-def test(outdir: Path, warning: StringIO, testroot: str):
+def test(sphinx_app: SphinxTestApp, outdir: Path, warning: StringIO, testroot: str):
     """Verify single-theme is the same as not using this feature."""
     assert (outdir / "index.html").is_file()
 
@@ -69,6 +72,19 @@ def test(outdir: Path, warning: StringIO, testroot: str):
         assert warnings_sans_colors == "WARNING: Sphinx config value for `html_theme` not a MultiTheme instance"
     else:
         assert not warnings
+
+    # Check config.
+    config = sphinx_app.config
+    assert config.html_theme == "classic"
+    if testroot.endswith("off"):
+        assert CONFIG_NAME_INTERNAL_THEMES not in config
+    else:
+        config_multi_theme = config[CONFIG_NAME_INTERNAL_THEMES]
+        if testroot.endswith("on"):
+            assert isinstance(config_multi_theme, MultiTheme)
+            assert config_multi_theme.active.name == "classic"
+        else:
+            assert config_multi_theme is None
 
 
 def test_directory_compare(tmp_path: Path):

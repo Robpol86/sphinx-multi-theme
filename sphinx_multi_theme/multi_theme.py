@@ -22,7 +22,7 @@ from sphinx.util import logging
 
 from sphinx_multi_theme import __version__
 
-CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__themes"
+CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__MultiTheme"
 
 
 @dataclass
@@ -129,14 +129,15 @@ def flatten_html_theme(_: Sphinx, config: Config):
     :param _: Sphinx application.
     :param config: Sphinx configuration.
     """
-    multi_themes: Union[str, MultiTheme] = config["html_theme"]
+    multi_theme_instance: Union[str, MultiTheme] = config["html_theme"]
     try:
-        config["html_theme"] = multi_themes.active.name
+        active_theme_name = multi_theme_instance.active.name
     except AttributeError:
         log = logging.getLogger(__name__)
         log.warning("Sphinx config value for `html_theme` not a %s instance", MultiTheme.__name__)
     else:
-        config[CONFIG_NAME_INTERNAL_THEMES][:] = multi_themes
+        config["html_theme"] = active_theme_name
+        config[CONFIG_NAME_INTERNAL_THEMES] = multi_theme_instance
 
 
 def setup(app: Sphinx) -> Dict[str, str]:
@@ -146,6 +147,6 @@ def setup(app: Sphinx) -> Dict[str, str]:
 
     :returns: Extension version.
     """
-    app.add_config_value(CONFIG_NAME_INTERNAL_THEMES, [], "html")
+    app.add_config_value(CONFIG_NAME_INTERNAL_THEMES, None, "html")
     app.connect("config-inited", flatten_html_theme)
     return dict(version=__version__)
