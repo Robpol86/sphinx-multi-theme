@@ -2,6 +2,8 @@
 # pylint: disable=invalid-name
 import time
 
+from sphinx_multi_theme.theme import MultiTheme
+
 
 # General configuration.
 author = "Robpol86"
@@ -11,6 +13,7 @@ exclude_patterns = []
 extensions = [
     "notfound.extension",  # https://sphinx-notfound-page.readthedocs.io
     "sphinx_copybutton",  # https://sphinx-copybutton.readthedocs.io
+    "sphinx_multi_theme.multi_theme",
     "sphinx_panels",  # https://sphinx-panels.readthedocs.io
     "sphinxext.opengraph",  # https://sphinxext-opengraph.readthedocs.io
 ]
@@ -21,7 +24,7 @@ pygments_style = "vs"
 
 # Options for HTML output.
 html_copy_source = False
-html_theme = "sphinx_rtd_theme"
+html_theme = MultiTheme(["sphinx_rtd_theme"])
 
 
 # https://sphinxext-opengraph.readthedocs.io/en/latest/#options

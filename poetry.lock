@@ -644,6 +644,18 @@ optional = false
 python-versions = ">=3.6"
 
 [[package]]
+name = "readthedocs-sphinx-ext"
+version = "2.1.5"
+description = "Sphinx extension for Read the Docs overrides"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Jinja2 = ">=2.9"
+requests = "*"
+
+[[package]]
 name = "requests"
 version = "2.27.1"
 description = "Python HTTP for Humans."
@@ -942,7 +954,7 @@ docs = ["sphinx-autobuild", "sphinx-copybutton", "sphinx-notfound-page", "sphinx
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "874bf9647088c701476c8fc7640c7c97e1de8098dfe45ba5d9ef4e5103aa2b1a"
+content-hash = "611a629dac37ff5033b0770c6a0b487fa469fcffeafcbaa08705cee2b989fc0b"
 
 [metadata.files]
 alabaster = [
@@ -1360,6 +1372,10 @@ pyyaml = [
     {file = "PyYAML-6.0-cp39-cp39-win32.whl", hash = "sha256:b5b9eccad747aabaaffbc6064800670f0c297e52c12754eb1d976c57e4f74dcb"},
     {file = "PyYAML-6.0-cp39-cp39-win_amd64.whl", hash = "sha256:b3d267842bf12586ba6c734f89d1f5b871df0273157918b0ccefa29deb05c21c"},
     {file = "PyYAML-6.0.tar.gz", hash = "sha256:68fb519c14306fec9720a2a5b45bc9f0c8d1b9c72adf45c37baedfcd949c35a2"},
+]
+readthedocs-sphinx-ext = [
+    {file = "readthedocs-sphinx-ext-2.1.5.tar.gz", hash = "sha256:1bf42e20e5b7a943891a798ce5ccb91fd5bac2230b0c199d85380c9210076b78"},
+    {file = "readthedocs_sphinx_ext-2.1.5-py2.py3-none-any.whl", hash = "sha256:a332bbd4c2872aa2c16d24994476ec889d38c49424362a1317a1b3c65aa01dbb"},
 ]
 requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
