@@ -16,8 +16,8 @@ jobs:
         include:
           - os: macos-latest
             python: "3.10"
-          - os: windows-latest
-            python: "3.10"
+#          - os: windows-latest
+#            python: "3.10"
           - os: ubuntu-latest
             python: "3.9"
             sphinx: "3.5.4"

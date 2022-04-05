@@ -20,23 +20,24 @@ from sphinx.util import logging
 
 from sphinx_multi_theme import __version__
 from sphinx_multi_theme.theme import MultiTheme
+from sphinx_multi_theme.utils import fork, modify_forked_sphinx_app
 
 CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__MultiTheme"
 
 
-def flatten_html_theme(_: Sphinx, config: Config):
-    """Replace MultiTheme instance with a string (the active theme's name).
+def fork_and_flatten_html_theme(app: Sphinx, config: Config):
+    """Fork the Python process and set html_theme to the theme name.
 
-    :param _: Sphinx application.
+    :param app: Sphinx application.
     :param config: Sphinx configuration.
     """
+    log = logging.getLogger(__name__)
     multi_theme_instance: Union[str, MultiTheme] = config["html_theme"]
 
     # Noop if MultiTheme not used.
     try:
         primary_theme_name = multi_theme_instance.primary.name
     except AttributeError:
-        log = logging.getLogger(__name__)
         log.warning("Sphinx config value for `html_theme` not a %s instance", MultiTheme.__name__)
         return
 
@@ -53,6 +54,26 @@ def flatten_html_theme(_: Sphinx, config: Config):
                     html_context_keys.append((top_level_key, key))
                     config[top_level_key][key] = primary_theme_name
 
+    # Skip fork if only one theme used.
+    if len(multi_theme_instance) < 2:
+        return
+
+    # Fork for each secondary theme serially.
+    log.info("Entering multi-theme build mode")
+    for idx, theme in enumerate(multi_theme_instance):
+        if not theme.is_primary:
+            log.info("Building docs with theme %s into %s", theme.name, theme.subdir)
+            if fork():
+                # This is the child process.
+                multi_theme_instance.set_active(idx)
+                modify_forked_sphinx_app(app, theme.subdir)
+                config["html_theme"] = theme.name
+                for key in html_context_keys:
+                    config["html_context"][key] = theme.name
+                return
+            log.info("Done with theme %s", theme.name)
+    log.info("Exiting multi-theme build mode")
+
 
 def setup(app: Sphinx) -> Dict[str, str]:
     """Called by Sphinx during phase 0 (initialization).
@@ -62,5 +83,5 @@ def setup(app: Sphinx) -> Dict[str, str]:
     :returns: Extension version.
     """
     app.add_config_value(CONFIG_NAME_INTERNAL_THEMES, None, "html")
-    app.connect("config-inited", flatten_html_theme)
+    app.connect("config-inited", fork_and_flatten_html_theme)
     return dict(version=__version__)
