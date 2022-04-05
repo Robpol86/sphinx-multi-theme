@@ -10,4 +10,4 @@ extensions = [
 master_doc = "index"
 nitpicky = True
 html_theme = MultiTheme(["classic"])
-html_context = {"html_theme": html_theme}
+html_context = {"html_theme": html_theme, "other": "for branch coverage"}
