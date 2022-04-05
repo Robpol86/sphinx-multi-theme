@@ -1,4 +1,4 @@
-"""Theme and MultiTheme classes that can be directly used in conf.py"""
+"""Theme and MultiTheme classes that can be directly used in conf.py."""
 from dataclasses import dataclass, field
 from typing import Dict, Iterator, List, Tuple, Union
 
