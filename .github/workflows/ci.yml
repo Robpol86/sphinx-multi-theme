@@ -21,20 +21,11 @@ jobs:
           - os: ubuntu-latest
             python: "3.9"
             sphinx: "3.5.4"
-          - os: ubuntu-latest
-            python: "3.9"
-            sphinx: "2.4.5"
-          - os: ubuntu-latest
-            python: "3.9"
-            sphinx: "1.8.6"
-          - os: ubuntu-latest
-            python: "3.9"
-            sphinx: "1.7.9"
     runs-on: "${{matrix.os}}"
     steps:
       - {name: Check out repository code, uses: actions/checkout@v2}
       - {name: Initialize dependencies, id: init, uses: Robpol86/actions-init-deps-py@v3,
-         with: {python-version: "${{matrix.python}}", postargs: " -E docs"}}
+         with: {python-version: "${{matrix.python}}", postargs: " -E docs", cache-buster: "${{matrix.sphinx}}"}}
       - {name: Remove OpenGraph, run: "poetry remove sphinxext-opengraph; poetry remove -D $_", if: "startsWith(matrix.sphinx, '1.')"}
       - {name: Downgrade Sphinx, run: "poetry add --dev sphinx=${{matrix.sphinx}}", if: "${{matrix.sphinx}}"}
       - {name: Run lints, run: make lint}
