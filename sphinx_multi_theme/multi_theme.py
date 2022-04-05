@@ -20,7 +20,7 @@ from sphinx.util import logging
 
 from sphinx_multi_theme import __version__
 from sphinx_multi_theme.theme import MultiTheme
-from sphinx_multi_theme.utils import fork, modify_forked_sphinx_app
+from sphinx_multi_theme.utils import fork, LOGGING_PREFIX, modify_forked_sphinx_app
 
 CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__MultiTheme"
 
@@ -38,7 +38,7 @@ def fork_and_flatten_html_theme(app: Sphinx, config: Config):
     try:
         primary_theme_name = multi_theme_instance.primary.name
     except AttributeError:
-        log.warning("Sphinx config value for `html_theme` not a %s instance", MultiTheme.__name__)
+        log.warning("%sSphinx config value for `html_theme` not a %s instance", LOGGING_PREFIX, MultiTheme.__name__)
         return
 
     # Update config.
@@ -59,10 +59,10 @@ def fork_and_flatten_html_theme(app: Sphinx, config: Config):
         return
 
     # Fork for each secondary theme serially.
-    log.info("Entering multi-theme build mode")
+    log.info("%sEntering multi-theme build mode", LOGGING_PREFIX)
     for idx, theme in enumerate(multi_theme_instance):
         if not theme.is_primary:
-            log.info("Building docs with theme %s into %s", theme.name, theme.subdir)
+            log.info("%sBuilding docs with theme %s into %s", LOGGING_PREFIX, theme.name, theme.subdir)
             if fork():
                 # This is the child process.
                 multi_theme_instance.set_active(idx)
@@ -71,8 +71,8 @@ def fork_and_flatten_html_theme(app: Sphinx, config: Config):
                 for key in html_context_keys:
                     config["html_context"][key] = theme.name
                 return
-            log.info("Done with theme %s", theme.name)
-    log.info("Exiting multi-theme build mode")
+            log.info("%sDone with theme %s", LOGGING_PREFIX, theme.name)
+    log.info("%sExiting multi-theme build mode", LOGGING_PREFIX)
 
 
 def setup(app: Sphinx) -> Dict[str, str]:

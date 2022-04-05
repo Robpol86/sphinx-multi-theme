@@ -5,6 +5,8 @@ from sphinx.application import Sphinx
 from sphinx.errors import SphinxError
 from sphinx.util import ensuredir, logging
 
+LOGGING_PREFIX = "🍴 "
+
 
 def fork() -> bool:
     """Fork the Python process and wait for the child process to finish.
@@ -38,14 +40,14 @@ def modify_forked_sphinx_app(app: Sphinx, subdir: str):
     # Set the output directory.
     new_outdir = os.path.join(old_outdir, subdir)
     ensuredir(new_outdir)
-    log.info(">>> Changing outdir from %s to %s", old_outdir, new_outdir)
+    log.info("%sChanging outdir from %s to %s", LOGGING_PREFIX, old_outdir, new_outdir)
     app.outdir = new_outdir
 
     # Set the doctree directory.
     new_doctreedir = old_doctreedir.replace(old_outdir, new_outdir)
     if new_doctreedir == old_doctreedir:
         new_doctreedir = os.path.join(old_doctreedir, subdir)
-    log.info(">>> Changing doctreedir from %s to %s", old_doctreedir, new_doctreedir)
+    log.info("%sChanging doctreedir from %s to %s", LOGGING_PREFIX, old_doctreedir, new_doctreedir)
     app.doctreedir = new_doctreedir
 
     # Exit after Sphinx finishes building before it sends Python up the call stack (e.g. during sphinx.testing).
