@@ -1,5 +1,5 @@
 """Sphinx test configuration."""
-from sphinx_multi_theme.multi_theme import MultiTheme
+from sphinx_multi_theme.theme import MultiTheme
 
 
 exclude_patterns = ["_build"]

@@ -2,7 +2,7 @@
 import pytest
 from sphinx.errors import SphinxError
 
-from sphinx_multi_theme.multi_theme import MultiTheme, Theme
+from sphinx_multi_theme.theme import MultiTheme, Theme
 
 
 def test():
