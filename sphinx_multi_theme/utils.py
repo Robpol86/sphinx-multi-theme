@@ -5,6 +5,7 @@ from sphinx.application import Sphinx
 from sphinx.errors import SphinxError
 from sphinx.util import ensuredir, logging
 
+CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__MultiTheme"
 LOGGING_PREFIX = "🍴 "
 
 

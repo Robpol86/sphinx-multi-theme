@@ -17,3 +17,7 @@ Project Links
 
     install
     usage
+
+List of themes:
+
+.. multi-theme-list::

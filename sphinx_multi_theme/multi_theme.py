@@ -19,10 +19,9 @@ from sphinx.config import Config
 from sphinx.util import logging
 
 from sphinx_multi_theme import __version__
+from sphinx_multi_theme.directives import MultiThemeListDirective
 from sphinx_multi_theme.theme import MultiTheme
-from sphinx_multi_theme.utils import fork_and_wait, LOGGING_PREFIX, modify_forked_sphinx_app
-
-CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__MultiTheme"
+from sphinx_multi_theme.utils import CONFIG_NAME_INTERNAL_THEMES, fork_and_wait, LOGGING_PREFIX, modify_forked_sphinx_app
 
 
 def fork_and_flatten_html_theme(app: Sphinx, config: Config):
@@ -83,5 +82,6 @@ def setup(app: Sphinx) -> Dict[str, str]:
     :returns: Extension version.
     """
     app.add_config_value(CONFIG_NAME_INTERNAL_THEMES, None, "html")
+    app.add_directive("multi-theme-list", MultiThemeListDirective)
     app.connect("config-inited", fork_and_flatten_html_theme)
     return dict(version=__version__)
