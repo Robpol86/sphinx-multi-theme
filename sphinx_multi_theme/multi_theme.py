@@ -92,4 +92,6 @@ def setup(app: Sphinx) -> Dict[str, str]:
     app.add_directive("multi-theme-list", MultiThemeListDirective)
     app.connect("config-inited", fork_and_flatten_html_theme)
     app.connect("build-finished", remove_me)
+    # TODO there's a bug somewhere: https://readthedocs.org/api/v2/build/16573672.txt
+    #       TODO Only one index.html (at the root), but locally there's an index.html in each theme_ dir.
     return dict(version=__version__)
