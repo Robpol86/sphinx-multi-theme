@@ -27,6 +27,10 @@ html_copy_source = False
 html_theme = MultiTheme(["sphinx_rtd_theme"])
 
 
+# Options for sphinx-multi-theme.
+multi_theme_print_files = True
+
+
 # https://sphinxext-opengraph.readthedocs.io/en/latest/#options
 ogp_site_name = project
 ogp_type = "website"
