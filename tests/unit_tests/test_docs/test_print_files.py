@@ -9,7 +9,7 @@ ROOTS = ("print-files/off", "print-files/on")
 
 
 @pytest.mark.parametrize("testroot", [pytest.param(r, marks=pytest.mark.sphinx("html", testroot=r)) for r in ROOTS])
-def test_off(sphinx_app: SphinxTestApp, status: StringIO, testroot: str):
+def test(sphinx_app: SphinxTestApp, status: StringIO, testroot: str):
     """Verify single-theme is the same as not using this feature."""
     assert sphinx_app
     logs = status.getvalue().strip()

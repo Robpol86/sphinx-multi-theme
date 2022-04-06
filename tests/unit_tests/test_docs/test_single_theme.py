@@ -70,7 +70,7 @@ def test(sphinx_app: SphinxTestApp, outdir: Path, warning: StringIO, testroot: s
     warnings = warning.getvalue().strip()
     if testroot.endswith("incomplete"):
         warnings_sans_colors = re.sub(r"\x1b\[[0-9;]+m", "", warnings)
-        assert warnings_sans_colors == "WARNING: Sphinx config value for `html_theme` not a MultiTheme instance"
+        assert warnings_sans_colors == "WARNING: 🍴 Sphinx config value for `html_theme` not a MultiTheme instance"
     else:
         assert not warnings
 
