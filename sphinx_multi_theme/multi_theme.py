@@ -26,11 +26,13 @@ from sphinx_multi_theme.theme import MultiTheme
 CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__MultiTheme"
 CONFIG_NAME_PRINT_FILES = "multi_theme_print_files"
 CONFIG_NAME_PRINT_FILES_STYLE = "multi_theme_print_files_style"
+LOGGING_PREFIX = "🍴 "
+SPHINX_CONNECT_PRIORITY_FLATTEN_HTML_THEME = 1
 SPHINX_CONNECT_PRIORITY_PRINT_FILES = 999
 
 
 def flatten_html_theme(_: Sphinx, config: Config):
-    """Replace MultiTheme instance with a string (the active theme's name).
+    """Move MultiTheme instance to an internal Sphinx config variable and set html_theme to the active theme's name.
 
     :param _: Sphinx application.
     :param config: Sphinx configuration.
@@ -39,14 +41,14 @@ def flatten_html_theme(_: Sphinx, config: Config):
 
     # Noop if MultiTheme not used.
     try:
-        primary_theme_name = multi_theme_instance.primary.name
+        active_theme_name = multi_theme_instance.active.name
     except AttributeError:
         log = logging.getLogger(__name__)
-        log.warning("Sphinx config value for `html_theme` not a %s instance", MultiTheme.__name__)
+        log.warning("%sSphinx config value for `html_theme` not a %s instance", LOGGING_PREFIX, MultiTheme.__name__)
         return
 
     # Update config.
-    config["html_theme"] = primary_theme_name
+    config["html_theme"] = active_theme_name
     config[CONFIG_NAME_INTERNAL_THEMES] = multi_theme_instance
 
     # Support ReadTheDocs hosted docs.
@@ -56,15 +58,17 @@ def flatten_html_theme(_: Sphinx, config: Config):
             for key, value in config[top_level_key].items():
                 if value == multi_theme_instance:
                     html_context_keys.append((top_level_key, key))
-                    config[top_level_key][key] = primary_theme_name
+                    config[top_level_key][key] = active_theme_name
 
 
-def print_files(app: Sphinx, _):
+def print_files(app: Sphinx, exc: Exception):
     """Print outdir listing.
 
     :param app: Sphinx application.
-    :param _: Unused.
+    :param exc: Exception raised during Sphinx build process, may be unrelated to this library.
     """
+    if exc:
+        return  # pragma: no cover
     if not app.config[CONFIG_NAME_PRINT_FILES]:
         return
     log = logging.getLogger(__name__)
@@ -92,5 +96,5 @@ def setup(app: Sphinx) -> Dict[str, str]:
     app.add_config_value(CONFIG_NAME_PRINT_FILES, False, "")
     app.add_config_value(CONFIG_NAME_PRINT_FILES_STYLE, "emoji" if os.sep == "/" else "dash", "")
     app.connect("build-finished", print_files, priority=SPHINX_CONNECT_PRIORITY_PRINT_FILES)
-    app.connect("config-inited", flatten_html_theme)
+    app.connect("config-inited", flatten_html_theme, priority=SPHINX_CONNECT_PRIORITY_FLATTEN_HTML_THEME)
     return dict(version=__version__)

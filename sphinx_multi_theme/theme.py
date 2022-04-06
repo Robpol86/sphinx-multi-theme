@@ -85,6 +85,12 @@ class MultiTheme:
         themes = [t for t in self.themes if t.is_primary]
         return themes[0]
 
+    def truncate(self) -> List[Theme]:
+        """Remove all secondary themes, only keep the primary theme."""
+        removed_themes = self.themes[1:]
+        self.themes[:] = self.themes[:1]
+        return removed_themes
+
     def set_subdir_attrs(self):
         """Set subdir attribute for every theme except the first one."""
         primary_theme = self.themes[0]

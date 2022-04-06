@@ -117,3 +117,22 @@ def test_subdir_attrs():
     first = "Theme(name='b', subdir='my_subdir', is_active=False)"
     second = "Theme(name='c', subdir='my_subdir', is_active=False)"
     assert exc.value.args[0] == f"Subdir collision: {first} and {second}"
+
+
+def test_truncate():
+    """Test."""
+    themes = MultiTheme(["a", "b", "c"])
+
+    removed = themes.truncate()
+    assert len(themes) == 1
+    assert themes[0].name == "a"
+    assert len(removed) == 2
+    assert removed[0].name == "b"
+    assert removed[1].name == "c"
+
+    assert themes.truncate() == []  # pylint: disable=use-implicit-booleaness-not-comparison
+    assert len(themes) == 1
+    assert themes[0].name == "a"
+    assert len(removed) == 2
+    assert removed[0].name == "b"
+    assert removed[1].name == "c"
