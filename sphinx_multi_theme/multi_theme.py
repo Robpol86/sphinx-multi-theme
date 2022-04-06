@@ -78,7 +78,14 @@ def fork_and_flatten_html_theme(app: Sphinx, config: Config):
 def remove_me(app: Sphinx, _):
     """Print outdir listing."""
     outdir = app.outdir
-    seedir(outdir, style="emoji")
+    seedir(
+        outdir,
+        style="emoji",
+        sort=True,
+        first="files",
+        include_files=["index.html", "jquery.js"],
+        exclude_folders=["_panels_static", "css", "js", ".doctrees"],
+    )
 
 
 def setup(app: Sphinx) -> Dict[str, str]:
