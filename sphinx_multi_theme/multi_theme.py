@@ -14,6 +14,7 @@ Example output file structure:
 """
 from typing import Dict, List, Tuple, Union
 
+from seedir import seedir
 from sphinx.application import Sphinx
 from sphinx.config import Config
 from sphinx.util import logging
@@ -74,6 +75,12 @@ def fork_and_flatten_html_theme(app: Sphinx, config: Config):
     log.info("%sExiting multi-theme build mode", LOGGING_PREFIX)
 
 
+def remove_me(app: Sphinx, _):
+    """Print outdir listing."""
+    outdir = app.outdir
+    seedir(outdir, style="emoji")
+
+
 def setup(app: Sphinx) -> Dict[str, str]:
     """Called by Sphinx during phase 0 (initialization).
 
@@ -84,4 +91,5 @@ def setup(app: Sphinx) -> Dict[str, str]:
     app.add_config_value(CONFIG_NAME_INTERNAL_THEMES, None, "html")
     app.add_directive("multi-theme-list", MultiThemeListDirective)
     app.connect("config-inited", fork_and_flatten_html_theme)
+    app.connect("build-finished", remove_me)
     return dict(version=__version__)

@@ -76,6 +76,8 @@ pytest-cov = "*"
 pytest-icdiff = "*"
 readthedocs-sphinx-ext = "<2.2"
 sphinxext-opengraph = "*"
+# Temporary.
+seedir = "*"
 
 [tool.black]
 line-length = 125
