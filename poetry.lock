@@ -187,8 +187,8 @@ docutils = ">=0.14"
 name = "emoji"
 version = "1.7.0"
 description = "Emoji for Python"
-category = "dev"
-optional = false
+category = "main"
+optional = true
 python-versions = "*"
 
 [package.extras]
@@ -448,8 +448,8 @@ testing = ["beautifulsoup4", "coverage", "docutils (>=0.17.0,<0.18.0)", "pytest 
 name = "natsort"
 version = "8.1.0"
 description = "Simple yet flexible natural sorting in Python."
-category = "dev"
-optional = false
+category = "main"
+optional = true
 python-versions = ">=3.6"
 
 [package.extras]
@@ -700,8 +700,8 @@ use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 name = "seedir"
 version = "0.3.0"
 description = "Package for creating, editing, and reading folder tree diagrams."
-category = "dev"
-optional = false
+category = "main"
+optional = true
 python-versions = "*"
 
 [package.dependencies]
@@ -984,12 +984,12 @@ docs = ["sphinx", "jaraco.packaging (>=8.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=4.6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-cov", "pytest-enabler (>=1.0.1)", "jaraco.itertools", "func-timeout", "pytest-black (>=0.3.7)", "pytest-mypy"]
 
 [extras]
-docs = ["sphinx-autobuild", "sphinx-copybutton", "sphinx-notfound-page", "sphinx-panels", "sphinx-rtd-theme", "sphinxext-opengraph"]
+docs = ["seedir", "sphinx-autobuild", "sphinx-copybutton", "sphinx-notfound-page", "sphinx-panels", "sphinx-rtd-theme", "sphinxext-opengraph"]
 
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "2f02b07a5fd6fbb196c6a750dc12691a59b8a91d31bf7f0f802a823bd55122b3"
+content-hash = "f072f0202ef346547ee05f3d83527d395acbed642ec7a9f757a8c27efc3e5236"
 
 [metadata.files]
 alabaster = [

@@ -40,6 +40,7 @@ python = "^3.6.2"
 # Project dependencies.
 sphinx = "*"
 # Docs.
+seedir = {version ="*", optional = true}  # Temporary.
 sphinx-autobuild = {version = "*", optional = true}
 sphinx-copybutton = {version = "*", optional = true}
 sphinx-notfound-page = {version = "*", optional = true}
@@ -49,6 +50,7 @@ sphinxext-opengraph = "*"
 
 [tool.poetry.extras]
 docs = [
+    "seedir",
     "sphinx-autobuild",
     "sphinx-copybutton",
     "sphinx-notfound-page",
@@ -76,8 +78,6 @@ pytest-cov = "*"
 pytest-icdiff = "*"
 readthedocs-sphinx-ext = "<2.2"
 sphinxext-opengraph = "*"
-# Temporary.
-seedir = "*"
 
 [tool.black]
 line-length = 125
