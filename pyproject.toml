@@ -38,6 +38,7 @@ repository = "https://github.com/Robpol86/sphinx-multi-theme"
 [tool.poetry.dependencies]
 python = "^3.6.2"
 # Project dependencies.
+seedir = "*"
 sphinx = "*"
 # Docs.
 sphinx-autobuild = {version = "*", optional = true}

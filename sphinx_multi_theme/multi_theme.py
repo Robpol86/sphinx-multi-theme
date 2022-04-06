@@ -12,8 +12,10 @@ Example output file structure:
     docs/_build/html/theme_classic/_static/jquery.js
     docs/_build/html/theme_classic/index.html
 """
+import os
 from typing import Dict, List, Tuple, Union
 
+from seedir import seedir
 from sphinx.application import Sphinx
 from sphinx.config import Config
 from sphinx.util import logging
@@ -22,6 +24,9 @@ from sphinx_multi_theme import __version__
 from sphinx_multi_theme.theme import MultiTheme
 
 CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__MultiTheme"
+CONFIG_NAME_PRINT_FILES = "multi_theme_print_files"
+CONFIG_NAME_PRINT_FILES_STYLE = "multi_theme_print_files_style"
+SPHINX_CONNECT_PRIORITY_PRINT_FILES = 999
 
 
 def flatten_html_theme(_: Sphinx, config: Config):
@@ -54,6 +59,28 @@ def flatten_html_theme(_: Sphinx, config: Config):
                     config[top_level_key][key] = primary_theme_name
 
 
+def print_files(app: Sphinx, _):
+    """Print outdir listing.
+
+    :param app: Sphinx application.
+    :param _: Unused.
+    """
+    if not app.config[CONFIG_NAME_PRINT_FILES]:
+        return
+    log = logging.getLogger(__name__)
+    print(flush=True)  # https://github.com/readthedocs/readthedocs-sphinx-ext/blob/2.1.5/readthedocs_ext/readthedocs.py#L270
+    output = seedir(
+        app.outdir,
+        style=app.config[CONFIG_NAME_PRINT_FILES_STYLE],
+        printout=False,
+        first="folders",
+        sort=True,
+        slash=os.sep,
+    )
+    for line in output.splitlines():
+        log.info(line)
+
+
 def setup(app: Sphinx) -> Dict[str, str]:
     """Called by Sphinx during phase 0 (initialization).
 
@@ -62,5 +89,8 @@ def setup(app: Sphinx) -> Dict[str, str]:
     :returns: Extension version.
     """
     app.add_config_value(CONFIG_NAME_INTERNAL_THEMES, None, "html")
+    app.add_config_value(CONFIG_NAME_PRINT_FILES, False, "")
+    app.add_config_value(CONFIG_NAME_PRINT_FILES_STYLE, "emoji" if os.sep == "/" else "dash", "")
+    app.connect("build-finished", print_files, priority=SPHINX_CONNECT_PRIORITY_PRINT_FILES)
     app.connect("config-inited", flatten_html_theme)
     return dict(version=__version__)
