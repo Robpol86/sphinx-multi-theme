@@ -20,7 +20,7 @@ from sphinx.util import logging
 
 from sphinx_multi_theme import __version__
 from sphinx_multi_theme.theme import MultiTheme
-from sphinx_multi_theme.utils import fork, LOGGING_PREFIX, modify_forked_sphinx_app
+from sphinx_multi_theme.utils import fork_and_wait, LOGGING_PREFIX, modify_forked_sphinx_app
 
 CONFIG_NAME_INTERNAL_THEMES = "multi_theme__INTERNAL__MultiTheme"
 
@@ -63,7 +63,7 @@ def fork_and_flatten_html_theme(app: Sphinx, config: Config):
     for idx, theme in enumerate(multi_theme_instance):
         if not theme.is_primary:
             log.info("%sBuilding docs with theme %r into directory %r", LOGGING_PREFIX, theme.name, theme.subdir)
-            if fork():
+            if fork_and_wait():
                 # This is the child process.
                 multi_theme_instance.set_active(idx)
                 modify_forked_sphinx_app(app, theme.subdir)

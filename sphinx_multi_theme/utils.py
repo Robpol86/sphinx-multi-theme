@@ -8,7 +8,7 @@ from sphinx.util import ensuredir, logging
 LOGGING_PREFIX = "🍴 "
 
 
-def fork() -> bool:
+def fork_and_wait() -> bool:
     """Fork the Python process and wait for the child process to finish.
 
     :return: True if this is the child process, False if this is still the original/parent process.
