@@ -25,7 +25,7 @@ class MultiThemeListDirective(SphinxDirective):
         log.warning("Extension not fully initialized: %r not in Sphinx config", CONFIG_NAME_INTERNAL_THEMES)
         return None
 
-    def gen_links(self, themes: List[Theme], active_is_primary: bool) -> List[Tuple[str, str]]:
+    def gen_links(self, themes: List[Theme], active_is_primary: bool) -> List[Tuple[str, str, bool]]:
         """Build a list of theme links.
 
         If the active theme is also the primary theme then all other themes are in subdirectories relative to the former.
@@ -34,33 +34,26 @@ class MultiThemeListDirective(SphinxDirective):
         :param themes: List of themes to parse.
         :param active_is_primary: If the current active theme is the primary theme.
 
-        :return: List of link text and link URI pairs.
+        :return: List of: link text, link URI, and if the URI is an internal docname.
         """
-        if active_is_primary:
-            docname = self.env.docname
-        else:
-            docname = "https://robpol86.com"
-        return [(t.name, docname) for t in themes]
+        docname = self.env.docname
+        entries = []
 
-        # # If current theme is root then all other themes are in subdirectories.
-        # if active_is_primary:
-        #     for idx, theme in enumerate(themes):
-        #         if theme.is_active:
-        #             ref = docname
-        #         else:
-        #             ref = f"{directory_prefix}{theme.name}/{builder.get_target_uri(docname)}{self.REF_SUFFIX}"
-        #         new_entries.append((theme.name, ref))
-        #     return new_entries
-        #
-        # # Current theme is a secondary theme. Root is up one dir.
-        # for idx, theme in enumerate(themes):
-        #     if theme.is_active:
-        #         ref = docname
-        #     elif extra["is_root"]:
-        #         ref = f"../{builder.get_target_uri(docname)}{self.REF_SUFFIX}"
-        #     else:
-        #         ref = f"../{directory_prefix}{theme.name}/{builder.get_target_uri(docname)}{self.REF_SUFFIX}"
-        #     new_entries.append((theme.name, ref))
+        for theme in themes:
+            if theme.is_active:
+                internal = True
+                ref = f"{docname}.html"  # TODO was: ref = docname
+            else:
+                internal = False
+                if active_is_primary:
+                    ref = f"{theme.subdir}/{docname}.html"
+                elif theme.is_primary:
+                    ref = f"../{docname}.html"
+                else:
+                    ref = f"../{theme.subdir}/{docname}.html"
+            entries.append((theme.name, ref, internal))
+
+        return entries
 
     def run(self) -> List[Element]:
         """Main."""
@@ -71,10 +64,10 @@ class MultiThemeListDirective(SphinxDirective):
             return []
 
         bullets = bullet_list(bullet="*")
-        for text, _ in self.gen_links(multi_theme.themes, multi_theme.active == multi_theme.primary):
+        for text, ref, internal in self.gen_links(multi_theme.themes, multi_theme.active == multi_theme.primary):
             bullet = list_item()
             para = paragraph()
-            para += reference(text=text, refuri="https://robpol86.com", internal=False)
+            para += reference(text=text, refuri=ref, internal=internal)
             bullet += para
             bullets.append(bullet)
         return [bullets]
