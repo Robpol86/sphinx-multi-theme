@@ -8,8 +8,8 @@ from typing import Optional
 import pytest
 from sphinx.testing.util import SphinxTestApp
 
-from sphinx_multi_theme.multi_theme import CONFIG_NAME_INTERNAL_THEMES
 from sphinx_multi_theme.theme import MultiTheme
+from sphinx_multi_theme.utils import CONFIG_NAME_INTERNAL_THEMES
 
 EXPECTED_NUM_FILES = 23
 IGNORE = DEFAULT_IGNORES + [".buildinfo"]
