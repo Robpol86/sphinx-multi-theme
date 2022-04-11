@@ -90,11 +90,9 @@ exclude_lines = [
     "^\\s*raise AssertionError",
     "^\\s*raise NotImplementedError",
 ]
-fail_under = 85
 
 [tool.coverage.run]
 branch = true
-plugins = ["tests.unit_tests.conftest"]
 
 [tool.pylint.FORMAT]
 good-names = ["i", "j", "k", "ex", "Run", "_", "x", "y", "z", "fd"]
