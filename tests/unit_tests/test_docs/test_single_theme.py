@@ -49,7 +49,9 @@ def directory_compare(left: Optional[Path] = None, right: Optional[Path] = None,
     return file_count
 
 
-@pytest.mark.parametrize("testroot", [pytest.param(r, marks=pytest.mark.sphinx("html", testroot=r)) for r in ROOTS])
+@pytest.mark.parametrize(
+    "testroot", [pytest.param(r, marks=pytest.mark.sphinx("html", freshenv=True, testroot=r)) for r in ROOTS]
+)
 def test(sphinx_app: SphinxTestApp, outdir: Path, warning: StringIO, testroot: str):
     """Verify single-theme is the same as not using this feature."""
     assert (outdir / "index.html").is_file()
