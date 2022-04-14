@@ -6,6 +6,7 @@ exclude_patterns = ["_build"]
 extensions = [
     "readthedocs_ext.readthedocs",
     "sphinx_multi_theme.multi_theme",
+    "conftest_fork_exit_save_child_data",
 ]
 master_doc = "index"
 nitpicky = True

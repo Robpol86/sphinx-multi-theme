@@ -24,6 +24,46 @@ from sphinx_multi_theme import __version__, utils
 from sphinx_multi_theme.theme import MultiTheme
 
 
+def fork_sphinx(app: Sphinx, config: Config):
+    """Fork the Python Sphinx process serially as many times as there are secondary themes.
+
+    :param app: Sphinx application.
+    :param config: Sphinx configuration.
+    """
+    log = logging.getLogger(__file__)
+    multi_theme_instance: Union[str, MultiTheme] = config["html_theme"]
+
+    # Noop if MultiTheme not used or only one theme specified by the user.
+    try:
+        themes = multi_theme_instance.themes
+    except AttributeError:
+        log.warning("%sSphinx config value for `html_theme` not a %s instance", utils.LOGGING_PREFIX, MultiTheme.__name__)
+        return
+    if len(themes) < 2:
+        return
+
+    # Noop on unsupported platforms.
+    if not hasattr(os, "fork"):
+        removed = multi_theme_instance.truncate()
+        removed_names = [t.name for t in removed]
+        log.warning("%sPlatform does not support forking, removing themes: %r", utils.LOGGING_PREFIX, removed_names)
+        return
+
+    # Fork and wait.
+    log.info("%sEntering multi-theme build mode", utils.LOGGING_PREFIX)
+    for idx, theme in enumerate(themes):
+        if not theme.is_primary:
+            log.info("%sBuilding docs with theme %r into directory %r", utils.LOGGING_PREFIX, theme.name, theme.subdir)
+            app.emit("multi-theme-before-fork", config, theme.name, theme.subdir)
+            if utils.fork_and_wait(app):
+                # This is the child process.
+                multi_theme_instance.set_active(idx)
+                utils.modify_forked_sphinx_app(app, config, theme.subdir)
+                return
+            log.info("%sDone with theme %r", utils.LOGGING_PREFIX, theme.name)
+    log.info("%sExiting multi-theme build mode", utils.LOGGING_PREFIX)
+
+
 def flatten_html_theme(_: Sphinx, config: Config):
     """Move MultiTheme instance to an internal Sphinx config variable and set html_theme to the active theme's name.
 
@@ -36,8 +76,6 @@ def flatten_html_theme(_: Sphinx, config: Config):
     try:
         active_theme_name = multi_theme_instance.active.name
     except AttributeError:
-        log = logging.getLogger(__name__)
-        log.warning("%sSphinx config value for `html_theme` not a %s instance", utils.LOGGING_PREFIX, MultiTheme.__name__)
         return
 
     # Update config.
@@ -85,9 +123,16 @@ def setup(app: Sphinx) -> Dict[str, str]:
 
     :returns: Extension version.
     """
+    app.add_config_value(utils.CONFIG_NAME_INTERNAL_IS_CHILD, False, "")
     app.add_config_value(utils.CONFIG_NAME_INTERNAL_THEMES, None, "html")
     app.add_config_value(utils.CONFIG_NAME_PRINT_FILES, False, "")
     app.add_config_value(utils.CONFIG_NAME_PRINT_FILES_STYLE, "emoji" if os.sep == "/" else "dash", "")
+    app.add_event("multi-theme-after-fork-child")
+    app.add_event("multi-theme-after-fork-parent-child-exited")
+    app.add_event("multi-theme-after-fork-parent-child-running")
+    app.add_event("multi-theme-before-fork")
+    app.add_event("multi-theme-child-before-exit")
     app.connect("build-finished", print_files, priority=utils.SPHINX_CONNECT_PRIORITY_PRINT_FILES)
     app.connect("config-inited", flatten_html_theme, priority=utils.SPHINX_CONNECT_PRIORITY_FLATTEN_HTML_THEME)
+    app.connect("config-inited", fork_sphinx, priority=utils.SPHINX_CONNECT_PRIORITY_FORK_SPHINX)
     return dict(version=__version__)
