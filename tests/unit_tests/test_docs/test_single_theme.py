@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Optional
 
 import pytest
+from _pytest.monkeypatch import MonkeyPatch
 from sphinx.testing.util import SphinxTestApp
 
 from sphinx_multi_theme.theme import MultiTheme
@@ -13,7 +14,17 @@ from sphinx_multi_theme.utils import CONFIG_NAME_INTERNAL_THEMES
 
 EXPECTED_NUM_FILES = 23
 IGNORE = DEFAULT_IGNORES + [".buildinfo"]
-ROOTS = ("single-theme/off", "single-theme/on", "single-theme/incomplete")
+ROOTS = ("single-theme/off", "single-theme/on", "single-theme/incomplete", "single-theme/no-fork")
+
+
+@pytest.fixture(autouse=True)
+def mock_os_without_fork(monkeypatch: MonkeyPatch, tmp_path: Path):
+    """Mock os without fork() attribute."""
+    mock_os_file = tmp_path / "mock_os" / "mock_os.py"
+    mock_os_file.parent.mkdir()
+    mock_os_file.write_text("from os import *\ntry:\n  del fork\nexcept NameError:\n  pass")
+    monkeypatch.syspath_prepend(mock_os_file.parent)
+    monkeypatch.setattr("sphinx_multi_theme.multi_theme.os", __import__("mock_os"))
 
 
 def directory_compare(left: Optional[Path] = None, right: Optional[Path] = None, compare: Optional[dircmp] = None) -> int:
@@ -62,6 +73,8 @@ def test(sphinx_app: SphinxTestApp, outdir: Path, warning: StringIO, testroot: s
         idx = parts.index("on")
     elif testroot.endswith("incomplete"):
         idx = parts.index("incomplete")
+    elif testroot.endswith("no-fork"):
+        idx = parts.index("no-fork")
     else:
         idx = None
     if idx is not None:
@@ -70,9 +83,11 @@ def test(sphinx_app: SphinxTestApp, outdir: Path, warning: StringIO, testroot: s
 
     # Check warnings.
     warnings = warning.getvalue().strip()
+    warnings_sans_colors = re.sub(r"\x1b\[[0-9;]+m", "", warnings)
     if testroot.endswith("incomplete"):
-        warnings_sans_colors = re.sub(r"\x1b\[[0-9;]+m", "", warnings)
         assert warnings_sans_colors == "WARNING: 🍴 Sphinx config value for `html_theme` not a MultiTheme instance"
+    elif testroot.endswith("no-fork"):
+        assert warnings_sans_colors == "WARNING: 🍴 Platform does not support forking, removing themes: ['fake1', 'fake2']"
     else:
         assert not warnings
 
@@ -83,7 +98,7 @@ def test(sphinx_app: SphinxTestApp, outdir: Path, warning: StringIO, testroot: s
         assert CONFIG_NAME_INTERNAL_THEMES not in config
     else:
         config_multi_theme = config[CONFIG_NAME_INTERNAL_THEMES]
-        if testroot.endswith("on"):
+        if testroot.endswith("on") or testroot.endswith("no-fork"):
             assert isinstance(config_multi_theme, MultiTheme)
             assert config_multi_theme.active.name == "classic"
         else:
