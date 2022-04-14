@@ -91,9 +91,6 @@ exclude_lines = [
     "^\\s*raise NotImplementedError",
 ]
 
-[tool.coverage.run]
-branch = true
-
 [tool.pylint.FORMAT]
 good-names = ["i", "j", "k", "ex", "Run", "_", "x", "y", "z", "fd"]
 ignore = [".venv/*", "build/*", "dist/*"]
@@ -116,5 +113,5 @@ min-similarity-lines = 7
 ignored-modules = ["distutils", "py"]
 
 [tool.pytest.ini_options]
-addopts = "--cov-report=term-missing --durations=15 --showlocals --verbose --verbose"
+addopts = "--cov-branch --cov-report=term-missing --durations=15 --showlocals --verbose --verbose"
 log_level = "DEBUG"
