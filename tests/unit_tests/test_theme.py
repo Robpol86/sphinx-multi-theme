@@ -1,4 +1,6 @@
 """Tests."""
+import pickle
+
 import pytest
 
 from sphinx_multi_theme.theme import Theme
@@ -25,3 +27,7 @@ def test():
         theme.is_primary = True  # noqa
 
     assert repr(theme) == "Theme(name='name', subdir='subdir', is_active=False)"
+
+    theme_pickled = pickle.loads(pickle.dumps(theme))
+    assert repr(theme_pickled) == repr(theme)
+    assert theme_pickled == theme

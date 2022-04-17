@@ -1,4 +1,6 @@
 """Tests."""
+import pickle
+
 import pytest
 from sphinx.errors import SphinxError
 
@@ -12,6 +14,30 @@ def test():
 
     themes = MultiTheme(["a", "b", "c"])
     assert len(themes) == 3
+
+    themes_pickled = pickle.loads(pickle.dumps(themes))
+    assert themes_pickled == themes
+
+
+def test_compare():
+    """Test."""
+    this = MultiTheme(["a", "b", "c"])
+    that = MultiTheme(["a", "b", "c"])
+    assert this == that
+    assert that == this
+
+    this[0].subdir = "changed"
+    assert this != that
+    assert that != this
+    that[0].subdir = "changed"
+    assert this == that
+    assert that == this
+
+    assert MultiTheme(["a", "b", "c"]) != MultiTheme(["b", "a", "c"])
+    assert MultiTheme(["b", "a", "c"]) != MultiTheme(["a", "b", "c"])
+
+    assert this != "string"
+    assert "string" != this
 
 
 def test_as_list_and_dict():

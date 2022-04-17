@@ -55,6 +55,13 @@ class MultiTheme:
         """Yield themes."""
         yield from self.themes
 
+    def __eq__(self, other):
+        """Compare."""
+        # https://stackoverflow.com/questions/390250/elegant-ways-to-support-equivalence-equality-in-python-classes
+        if type(other) is type(self):
+            return other.themes == self.themes
+        return NotImplemented
+
     def items(self) -> Iterator[Tuple[str, Theme]]:
         """Yield name and theme pairs."""
         for theme in self.themes:

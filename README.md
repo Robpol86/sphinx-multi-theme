@@ -2,7 +2,7 @@
 
 A Sphinx extension that builds copies of your docs using multiple themes into separate subdirectories.
 
-* Python 3.6, 3.7, 3.8, and 3.9 supported on Linux, macOS, and Windows.
+* Python 3.6, 3.7, 3.8, and 3.9 supported on Linux and macOS.
 
 📖 Full documentation: https://sphinx-multi-theme.readthedocs.io
 

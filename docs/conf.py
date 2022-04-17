@@ -1,6 +1,5 @@
 """Sphinx configuration file."""
 # pylint: disable=invalid-name
-import os
 import time
 
 from sphinx_multi_theme.theme import MultiTheme
@@ -25,7 +24,7 @@ pygments_style = "vs"
 
 # Options for HTML output.
 html_copy_source = False
-html_theme = MultiTheme(["sphinx_rtd_theme"] + ([] if os.name == "nt" else ["alabaster", "classic", "traditional"]))
+html_theme = MultiTheme(["sphinx_rtd_theme", "alabaster", "classic", "traditional"])
 
 
 # Options for sphinx-multi-theme.
