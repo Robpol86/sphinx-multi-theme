@@ -10,6 +10,7 @@ class Theme:
     """A 'struct' representing one theme."""
 
     name: str  # e.g. "sphinx_rtd_theme"
+    display_name: str = ""  # Pretty name shown in the toctree, e.g. "Read the Docs"
     subdir: str = ""  # Subdirectory basename including prefix, e.g. "theme_rtd"
     is_active: bool = field(default=False, init=False)  # If this is the current theme Sphinx is building in this process.
 

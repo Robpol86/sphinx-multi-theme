@@ -17,3 +17,6 @@ Project Links
 
     install
     usage
+
+.. multi-theme-toctree::
+    :caption: Example Themes

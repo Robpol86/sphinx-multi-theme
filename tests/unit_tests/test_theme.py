@@ -10,6 +10,7 @@ def test():
     """Test."""
     theme = Theme("name")
     assert theme.name == "name"
+    assert theme.display_name == ""
     assert theme.subdir == ""
     assert theme.is_active is False
     assert theme.is_primary is True
@@ -17,8 +18,9 @@ def test():
     theme.is_active = True
     assert theme.is_active is True
 
-    theme = Theme("name", "subdir")
+    theme = Theme("name", "Name", "subdir")
     assert theme.name == "name"
+    assert theme.display_name == "Name"
     assert theme.subdir == "subdir"
     assert theme.is_active is False
     assert theme.is_primary is False
@@ -26,7 +28,7 @@ def test():
     with pytest.raises(AttributeError):
         theme.is_primary = True  # noqa
 
-    assert repr(theme) == "Theme(name='name', subdir='subdir', is_active=False)"
+    assert repr(theme) == "Theme(name='name', display_name='Name', subdir='subdir', is_active=False)"
 
     theme_pickled = pickle.loads(pickle.dumps(theme))
     assert repr(theme_pickled) == repr(theme)
