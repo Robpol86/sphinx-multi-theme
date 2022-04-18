@@ -21,6 +21,8 @@ from sphinx.config import Config
 from sphinx.util import logging
 
 from sphinx_multi_theme import __version__, utils
+from sphinx_multi_theme.directives import MultiThemeTocTreeDirective
+from sphinx_multi_theme.nodes import MultiThemeTocTreeNode
 from sphinx_multi_theme.theme import MultiTheme
 
 
@@ -127,11 +129,13 @@ def setup(app: Sphinx) -> Dict[str, str]:
     app.add_config_value(utils.CONFIG_NAME_INTERNAL_THEMES, None, "html")
     app.add_config_value(utils.CONFIG_NAME_PRINT_FILES, False, "")
     app.add_config_value(utils.CONFIG_NAME_PRINT_FILES_STYLE, "emoji" if os.sep == "/" else "dash", "")
+    app.add_directive("multi-theme-toctree", MultiThemeTocTreeDirective)
     app.add_event("multi-theme-after-fork-child")
     app.add_event("multi-theme-after-fork-parent-child-exited")
     app.add_event("multi-theme-after-fork-parent-child-running")
     app.add_event("multi-theme-before-fork")
     app.add_event("multi-theme-child-before-exit")
+    app.add_node(MultiThemeTocTreeNode)
     app.connect("build-finished", print_files, priority=utils.SPHINX_CONNECT_PRIORITY_PRINT_FILES)
     app.connect("config-inited", flatten_html_theme, priority=utils.SPHINX_CONNECT_PRIORITY_FLATTEN_HTML_THEME)
     app.connect("config-inited", fork_sphinx, priority=utils.SPHINX_CONNECT_PRIORITY_FORK_SPHINX)

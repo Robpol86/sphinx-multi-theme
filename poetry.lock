@@ -243,6 +243,14 @@ python-versions = "*"
 flake8 = "*"
 
 [[package]]
+name = "funcy"
+version = "1.17"
+description = "A fancy and practical functional tools"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "icdiff"
 version = "2.0.5"
 description = "improved colored diff"
@@ -989,7 +997,7 @@ docs = ["sphinx-autobuild", "sphinx-copybutton", "sphinx-notfound-page", "sphinx
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6.2"
-content-hash = "cc7359595a957541fdb88270fd09aa7c75b7aa19d2df60ce9dd672dcb2de5742"
+content-hash = "8321b398fcbeaae620e96c03f31f31a01fb213bbd10b7e7da705a63a7b9c8be9"
 
 [metadata.files]
 alabaster = [
@@ -1140,6 +1148,10 @@ flake8-import-order = [
 flake8-polyfill = [
     {file = "flake8-polyfill-1.0.2.tar.gz", hash = "sha256:e44b087597f6da52ec6393a709e7108b2905317d0c0b744cdca6208e670d8eda"},
     {file = "flake8_polyfill-1.0.2-py2.py3-none-any.whl", hash = "sha256:12be6a34ee3ab795b19ca73505e7b55826d5f6ad7230d31b18e106400169b9e9"},
+]
+funcy = [
+    {file = "funcy-1.17-py2.py3-none-any.whl", hash = "sha256:ba7af5e58bfc69321aaf860a1547f18d35e145706b95d1b3c966abc4f0b60309"},
+    {file = "funcy-1.17.tar.gz", hash = "sha256:40b9b9a88141ae6a174df1a95861f2b82f2fdc17669080788b73a3ed9370e968"},
 ]
 icdiff = [
     {file = "icdiff-2.0.5.tar.gz", hash = "sha256:35d24b728e48b7e0a12bdb69386d3bfc7eef4fe922d0ac1cd70d6e5c11630bae"},

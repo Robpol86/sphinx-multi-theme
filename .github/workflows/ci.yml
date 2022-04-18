@@ -20,7 +20,7 @@ jobs:
             python: "3.10"
           - os: ubuntu-latest
             python: "3.9"
-            sphinx: "3.5.4"
+            sphinx: "4.0.3"
     runs-on: "${{matrix.os}}"
     steps:
       - {name: Check out repository code, uses: actions/checkout@v2}

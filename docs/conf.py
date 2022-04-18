@@ -2,7 +2,7 @@
 # pylint: disable=invalid-name
 import time
 
-from sphinx_multi_theme.theme import MultiTheme
+from sphinx_multi_theme.theme import MultiTheme, Theme
 
 
 # General configuration.
@@ -24,7 +24,14 @@ pygments_style = "vs"
 
 # Options for HTML output.
 html_copy_source = False
-html_theme = MultiTheme(["sphinx_rtd_theme", "alabaster", "classic", "traditional"])
+html_theme = MultiTheme(
+    [
+        Theme("sphinx_rtd_theme", "Read the Docs"),
+        Theme("alabaster", "Alabaster"),
+        Theme("classic", "Classic"),
+        Theme("traditional", "Traditional"),
+    ]
+)
 
 
 # Options for sphinx-multi-theme.

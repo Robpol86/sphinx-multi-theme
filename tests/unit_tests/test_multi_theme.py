@@ -125,23 +125,23 @@ def test_subdir_attrs():
     themes = MultiTheme(["a"])
     assert themes[0].subdir == ""
 
-    themes = MultiTheme([Theme("a"), Theme("b", "my_subdir")])
+    themes = MultiTheme([Theme("a"), Theme("b", subdir="my_subdir")])
     assert themes[0].subdir == ""
     assert themes[1].subdir == "my_subdir"
 
-    themes = MultiTheme(["a", Theme("b", "theme_c"), "c"])
+    themes = MultiTheme(["a", Theme("b", subdir="theme_c"), "c"])
     assert themes[0].subdir == ""
     assert themes[1].subdir == "theme_c"
     assert themes[2].subdir == "theme_c2"
 
     with pytest.raises(SphinxError) as exc:
-        MultiTheme([Theme("a", "my_subdir")])
+        MultiTheme([Theme("a", subdir="my_subdir")])
     assert exc.value.args[0] == "Primary theme cannot have a subdir"
 
     with pytest.raises(SphinxError) as exc:
-        MultiTheme(["a", Theme("b", "my_subdir"), Theme("c", "my_subdir")])
-    first = "Theme(name='b', subdir='my_subdir', is_active=False)"
-    second = "Theme(name='c', subdir='my_subdir', is_active=False)"
+        MultiTheme(["a", Theme("b", subdir="my_subdir"), Theme("c", subdir="my_subdir")])
+    first = "Theme(name='b', display_name='', subdir='my_subdir', is_active=False)"
+    second = "Theme(name='c', display_name='', subdir='my_subdir', is_active=False)"
     assert exc.value.args[0] == f"Subdir collision: {first} and {second}"
 
 
