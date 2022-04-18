@@ -37,7 +37,7 @@ def fork_sphinx(app: Sphinx, config: Config):
     try:
         themes = multi_theme_instance.themes
     except AttributeError:
-        log.warning("%sSphinx config value for `html_theme` not a %s instance", utils.LOGGING_PREFIX, MultiTheme.__name__)
+        log.warning("Sphinx config value for `html_theme` not a %s instance", MultiTheme.__name__)
         return
     if len(themes) < 2:
         return
@@ -46,7 +46,7 @@ def fork_sphinx(app: Sphinx, config: Config):
     if not hasattr(os, "fork"):
         removed = multi_theme_instance.truncate()
         removed_names = [t.name for t in removed]
-        log.warning("%sPlatform does not support forking, removing themes: %r", utils.LOGGING_PREFIX, removed_names)
+        log.warning("Platform does not support forking, removing themes: %r", removed_names)
         return
 
     # Fork and wait.
