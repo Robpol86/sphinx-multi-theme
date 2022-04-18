@@ -4,9 +4,12 @@ import sys
 from io import StringIO
 from pathlib import Path
 from types import ModuleType
+from typing import Dict, Tuple
 
 import coverage
 import pytest
+from _pytest.config import Config
+from _pytest.fixtures import FixtureRequest
 from _pytest.monkeypatch import MonkeyPatch
 from sphinx.application import Sphinx
 from sphinx.testing.path import path
@@ -98,3 +101,16 @@ def skip_if_no_fork() -> bool:
     if not hasattr(os, "fork"):
         pytest.skip("Unsupported platform: no os.fork()")
     return True
+
+
+def pytest_configure(config: Config):
+    """Register markers."""
+    config.addinivalue_line("markers", "keep_srcdir: don't delete session-scoped temporary copy of test source docs")
+
+
+@pytest.fixture(name="app_params")
+def _app_params(request: FixtureRequest, app_params: Tuple[Dict, Dict]) -> Tuple[Dict, Dict]:
+    """Delete srcdir after every test."""
+    if not request.node.get_closest_marker("keep_srcdir"):
+        request.addfinalizer(app_params[1]["srcdir"].rmtree)
+    return app_params

@@ -135,4 +135,4 @@ def setup(app: Sphinx) -> Dict[str, str]:
     app.connect("build-finished", print_files, priority=utils.SPHINX_CONNECT_PRIORITY_PRINT_FILES)
     app.connect("config-inited", flatten_html_theme, priority=utils.SPHINX_CONNECT_PRIORITY_FLATTEN_HTML_THEME)
     app.connect("config-inited", fork_sphinx, priority=utils.SPHINX_CONNECT_PRIORITY_FORK_SPHINX)
-    return dict(version=__version__)
+    return dict(parallel_read_safe=True, parallel_write_safe=True, version=__version__)
