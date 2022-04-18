@@ -86,9 +86,9 @@ def test(sphinx_app: SphinxTestApp, outdir: Path, warning: StringIO, testroot: s
     warnings = warning.getvalue().strip()
     warnings_sans_colors = re.sub(r"\x1b\[[0-9;]+m", "", warnings)
     if testroot.endswith("incomplete"):
-        assert warnings_sans_colors == "WARNING: 🍴 Sphinx config value for `html_theme` not a MultiTheme instance"
+        assert warnings_sans_colors == "WARNING: Sphinx config value for `html_theme` not a MultiTheme instance"
     elif testroot.endswith("no-fork"):
-        assert warnings_sans_colors == "WARNING: 🍴 Platform does not support forking, removing themes: ['fake1', 'fake2']"
+        assert warnings_sans_colors == "WARNING: Platform does not support forking, removing themes: ['fake1', 'fake2']"
     else:
         assert not warnings
 
