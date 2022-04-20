@@ -11,22 +11,17 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python: ["3.6", "3.7", "3.8", "3.9", "3.10"]
-        sphinx: [""]
+        python: ["3.7", "3.8", "3.9", "3.10"]
         include:
           - os: macos-latest
             python: "3.10"
           - os: windows-latest
             python: "3.10"
-          - os: ubuntu-latest
-            python: "3.9"
-            sphinx: "4.0.3"
     runs-on: "${{matrix.os}}"
     steps:
       - {name: Check out repository code, uses: actions/checkout@v2}
       - {name: Initialize dependencies, id: init, uses: Robpol86/actions-init-deps-py@v3,
-         with: {python-version: "${{matrix.python}}", postargs: " -E docs", cache-buster: "${{matrix.sphinx}}"}}
-      - {name: Downgrade Sphinx, run: "poetry add --dev sphinx=${{matrix.sphinx}}", if: "${{matrix.sphinx}}"}
+         with: {python-version: "${{matrix.python}}"}}
       - {name: Run lints, run: make lint}
       - {name: Run tests, run: make test, env: {PY_COLORS: 1}}
       - {name: Run integration tests, run: make it}
