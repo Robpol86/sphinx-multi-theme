@@ -22,7 +22,6 @@ classifiers = [
     "Operating System :: POSIX :: Linux",
     "Operating System :: POSIX",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
@@ -36,28 +35,11 @@ documentation = "https://sphinx-multi-theme.readthedocs.io"
 repository = "https://github.com/Robpol86/sphinx-multi-theme"
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = "^3.7"
 # Project dependencies.
 funcy = "*"
 seedir = "*"
 sphinx = "*"
-# Docs.
-sphinx-autobuild = {version = "*", optional = true}
-sphinx-copybutton = {version = "*", optional = true}
-sphinx-notfound-page = {version = "*", optional = true}
-sphinx-panels = {version = "*", optional = true}
-sphinx-rtd-theme = {version = ">=1.0", optional = true}
-sphinxext-opengraph = "*"
-
-[tool.poetry.extras]
-docs = [
-    "sphinx-autobuild",
-    "sphinx-copybutton",
-    "sphinx-notfound-page",
-    "sphinx-panels",
-    "sphinx-rtd-theme",
-    "sphinxext-opengraph",
-]
 
 [tool.poetry.dev-dependencies]
 # IDE.
@@ -76,7 +58,13 @@ myst-parser = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-icdiff = "*"
-readthedocs-sphinx-ext = "<2.2"
+readthedocs-sphinx-ext = "*"
+# Docs.
+sphinx-autobuild = "*"
+sphinx-copybutton = "*"
+sphinx-notfound-page = "*"
+sphinx-panels = "*"
+sphinx-rtd-theme = ">=1.0"
 sphinxext-opengraph = "*"
 
 [tool.black]

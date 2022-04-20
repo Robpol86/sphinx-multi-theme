@@ -21,7 +21,7 @@ poetry.lock:
 .PHONY: deps
 deps: _HELP = Install project dependencies
 deps:
-	poetry install -E docs
+	poetry install
 
 requirements.txt: _HELP = Generate development requirements.txt
 requirements.txt: poetry.lock
