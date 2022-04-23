@@ -40,7 +40,7 @@ python = "^3.6.2"
 # Project dependencies.
 funcy = "*"
 seedir = "*"
-sphinx = "*"
+Sphinx = ">=4.0.0"
 
 [tool.poetry.dev-dependencies]
 # IDE.

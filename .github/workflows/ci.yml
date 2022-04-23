@@ -18,13 +18,10 @@ jobs:
     runs-on: "${{matrix.os}}"
     steps:
       - {name: Check out repository code, uses: actions/checkout@v2}
-      - {name: Initialize dependencies, id: init, uses: Robpol86/actions-init-deps-py@v3,
-         with: {python-version: "${{matrix.python}}"}}
-      - {name: Run lints, run: make lint}
+      - {name: Initialize dependencies, uses: Robpol86/actions-init-deps-py@v3, with: {python-version: "${{matrix.python}}"}}
       - {name: Run tests, run: make test, env: {PY_COLORS: 1}}
+      - {name: Upload coverage, uses: codecov/codecov-action@v2, with: {name: "coverage-${{runner.os}}-${{matrix.python}}"}}
+      - {name: Run lints, run: make lint}
       - {name: Run integration tests, run: make it}
       - {name: Build docs, run: make docs, if: "runner.os != 'Windows'"}
       - {name: Build package, run: make build && cd dist && unzip -t *.whl && unzip -p *.whl '*/METADATA'}
-      - name: Upload coverage
-        uses: codecov/codecov-action@v2
-        with: {name: "coverage-${{runner.os}}-py${{steps.init.outputs.python-version}}"}
