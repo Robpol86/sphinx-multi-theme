@@ -36,30 +36,32 @@ documentation = "https://sphinx-multi-theme.readthedocs.io"
 repository = "https://github.com/Robpol86/sphinx-multi-theme"
 
 [tool.poetry.dependencies]
-python = "^3.6.2"
+python = ">=3.6"
 # Project dependencies.
+dataclasses = {version = "*", python = "<3.7"}
 funcy = "*"
 seedir = "*"
 Sphinx = ">=4.0.0"
 
 [tool.poetry.dev-dependencies]
+Sphinx = {version = "^4.5", python = "^3.6"}
 # IDE.
 docutils-stubs = "*"
 # Linters.
-black = "*"
-flake8 = "*"
+black = {version = "*", python = "^3.6.2"}
+flake8 = {version = "*", python = "^3.6"}
 flake8-docstrings = "*"
-flake8-import-order = "*"
-pep8-naming = "*"
-pylint = "*"
+flake8-import-order = {version = "*", python = "^3.6"}
+pep8-naming = {version = "*", python = "^3.6"}
+pylint = {version = "*", python = "^3.6"}
 # Tests.
 beautifulsoup4 = "*"
 coverage = {version = "*", extras = ["toml"]}
-myst-parser = "*"
+myst-parser = {version = "*", python = "^3.6"}
 pytest = "*"
 pytest-cov = "*"
 pytest-icdiff = "*"
-readthedocs-sphinx-ext = "*"
+readthedocs-sphinx-ext = {version = "*", python = "^3.6"}
 # Docs.
 sphinx-autobuild = "*"
 sphinx-copybutton = "*"
