@@ -18,6 +18,11 @@ poetry.lock: _HELP = Lock dependency versions to file
 poetry.lock:
 	poetry lock
 
+.PHONY: relock
+relock: _HELP = Delete and recreate poetry lock file
+relock:
+	rm -f poetry.lock && $(MAKE) poetry.lock
+
 .PHONY: deps
 deps: _HELP = Install project dependencies
 deps:
