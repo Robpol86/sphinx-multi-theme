@@ -11,7 +11,7 @@ in the project's directory run this if you're on macOS (requires [Homebrew](http
 brew install python@3.7
 brew install poetry  # More info: https://python-poetry.org
 make clean
-make PYTHON_PATH="$(brew --prefix)/opt/python@3.7/bin/python3" init
+make PROJECT_PY_PATH="$(brew --prefix)/opt/python@3.7/bin/python3" init
 make deps
 ```
 
@@ -21,7 +21,7 @@ On Ubuntu (including Windows WSL2):
 sudo apt-get update && sudo apt-get install make python3-virtualenv python3
 curl -sSL https://install.python-poetry.org | python3 -
 make clean
-make PYTHON_VERSION=3.7 init
+make PROJECT_PY_VERSION=3.7 init
 make deps
 ```
 
