@@ -1,17 +1,10 @@
 # sphinx-multi-theme
 
-A Sphinx extension that builds copies of your docs using multiple themes into separate subdirectories.
-
-* Python 3.6, 3.7, 3.8, and 3.9 supported on Linux and macOS.
-
-📖 Full documentation: https://sphinx-multi-theme.readthedocs.io
-
 [![Github-CI][github-ci]][github-link]
 [![Coverage Status][codecov-badge]][codecov-link]
 [![Documentation Status][rtd-badge]][rtd-link]
 [![Code style: black][black-badge]][black-link]
 [![PyPI][pypi-badge]][pypi-link]
-[![PyPI Downloads][pypi-dl-badge]][pypi-dl-link]
 
 [github-ci]: https://github.com/Robpol86/sphinx-multi-theme/actions/workflows/ci.yml/badge.svg?branch=main
 [github-link]: https://github.com/Robpol86/sphinx-multi-theme/actions/workflows/ci.yml
@@ -23,7 +16,42 @@ A Sphinx extension that builds copies of your docs using multiple themes into se
 [black-link]: https://github.com/ambv/black
 [pypi-badge]: https://img.shields.io/pypi/v/sphinx-multi-theme.svg
 [pypi-link]: https://pypi.org/project/sphinx-multi-theme
-[pypi-dl-badge]: https://img.shields.io/pypi/dw/sphinx-multi-theme?label=pypi%20downloads
-[pypi-dl-link]: https://pypistats.org/packages/sphinx-multi-theme
 
-TODO
+A Sphinx extension that builds copies of your docs using multiple themes into separate subdirectories.
+
+📖 See the documentation at https://sphinx-multi-theme.readthedocs.io
+
+## Install
+
+```shell
+pip install sphinx-multi-theme
+```
+
+## Example
+
+```python
+# conf.py
+from sphinx_multi_theme.theme import MultiTheme, Theme
+
+extensions = [
+    "sphinx_multi_theme.multi_theme",
+]
+
+html_theme = MultiTheme(
+    [
+        Theme("sphinx_rtd_theme", "Read the Docs"),
+        Theme("alabaster", "Alabaster"),
+        Theme("classic", "Classic"),
+    ]
+)
+```
+
+```rst
+===============
+An RST Document
+===============
+
+.. multi-theme-toctree::
+    :caption: Example Themes
+
+```
