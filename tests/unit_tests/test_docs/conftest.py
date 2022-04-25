@@ -1,4 +1,4 @@
-"""pytest fixtures."""
+"""pytest conftest."""
 import os
 import sys
 from io import StringIO
