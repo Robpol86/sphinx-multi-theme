@@ -55,3 +55,22 @@ def test_exit_code(app_params: Tuple[Dict, Dict], fail: bool):
         assert lines.count("TEST_EXIT_STATUS_CAUSE_EXC") == 0
         assert len(re.findall(r"SphinxError: Child process \d+ failed with status 2$", logs, re.MULTILINE)) == 0
         assert os.path.isfile(os.path.join(outdir, "index.html"))
+
+
+@pytest.mark.usefixtures("skip_if_no_fork")
+@pytest.mark.sphinx("html", freshenv=True, testroot="fork-failed")
+def test_child_logs(app_params: Tuple[Dict, Dict]):
+    """Test."""
+    srcdir: path = app_params[1]["srcdir"]
+    outdir: path = srcdir / "_build" / "html"
+    cmd = [sys.executable, "-m", "sphinx", "-T", "-n", "-W", srcdir, outdir]
+
+    # Run.
+    env = dict(os.environ, TEST_ENV_UPDATED_CAUSE_EXC="TRUE")
+    with pytest.raises(CalledProcessError) as exc:
+        check_output(cmd, env=env, stderr=STDOUT)
+    output = exc.value.output
+
+    # Check.
+    logs = output.decode("utf8").strip()
+    assert "SphinxError: TEST_ENV_UPDATED_CAUSE_EXC" in logs

@@ -17,8 +17,13 @@ html_theme = MultiTheme(["classic", "traditional", "alabaster"])
 def setup(app: Sphinx):
     """Cause failure."""
 
-    def callback(*_):
+    def callback_env_updated(*_):
+        if os.environ.get("TEST_ENV_UPDATED_CAUSE_EXC") == "TRUE":
+            raise SphinxError("TEST_ENV_UPDATED_CAUSE_EXC")
+
+    def callback_after_fork_child(*_):
         if os.environ.get("TEST_EXIT_STATUS_CAUSE_EXC") == "TRUE":
             raise SphinxError("TEST_EXIT_STATUS_CAUSE_EXC")
 
-    app.connect("multi-theme-after-fork-child", callback)
+    app.connect("multi-theme-after-fork-child", callback_after_fork_child)
+    app.connect("env-updated", callback_env_updated)
