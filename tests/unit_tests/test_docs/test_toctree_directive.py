@@ -1,7 +1,10 @@
 """Tests."""
+import os
+import sys
 from io import StringIO
 from pathlib import Path
-from typing import List, Tuple
+from subprocess import check_output, STDOUT
+from typing import Dict, List, Tuple
 
 import pytest
 from bs4 import BeautifulSoup, Tag
@@ -116,6 +119,23 @@ def test_links(html: HTML):
     assert "current" not in links_sub[0]["class"]
     assert links_sub[1]["href"] == "#"
     assert "current" in links_sub[1]["class"]
+
+
+@pytest.mark.usefixtures("skip_if_no_fork")
+@pytest.mark.sphinx("linkcheck", freshenv=True, testroot="toctree-directive/links")
+def test_linkcheck(app_params: Tuple[Dict, Dict]):
+    """Test."""
+    srcdir = Path(app_params[1]["srcdir"])
+    outdir = srcdir / "_build" / "linkcheck"
+
+    env = dict(os.environ, TEST_IN_SUBPROCESS="TRUE")
+    cmd = [sys.executable, "-m", "sphinx", "-b", "linkcheck", "-T", "-n", "-W", srcdir, outdir]
+    check_output(cmd, env=env, stderr=STDOUT, cwd=srcdir)
+
+    output_primary = outdir / "output.txt"
+    assert output_primary.stat().st_size == 0
+    output_secondary = outdir / "theme_secondary" / "output.txt"
+    assert output_secondary.stat().st_size == 0
 
 
 @pytest.mark.usefixtures("skip_if_no_fork")
