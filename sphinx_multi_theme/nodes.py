@@ -16,7 +16,7 @@ class MultiThemeTocTreeNode(addnodes.toctree):
     def docname(self) -> str:
         """Get the current Sphinx document name (e.g. "index")."""
         env = self.document.settings.env  # noqa
-        return env.app.builder.current_docname or self.attributes["parent"]
+        return getattr(env.app.builder, "current_docname", None) or self.attributes["parent"]
 
     def get_ref(self, key) -> Optional[str]:
         """Return the relative link to a theme or an empty string if key out of scope."""
