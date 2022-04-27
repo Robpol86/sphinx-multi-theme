@@ -61,10 +61,6 @@ deps: _HELP = Install project dependencies
 deps:
 	poetry install
 
-requirements.txt: _HELP = Generate development requirements.txt
-requirements.txt: poetry.lock
-	poetry export --dev --without-hashes -o $@
-
 ## Testing
 
 .PHONY: lint

@@ -1,6 +1,7 @@
 """Avoid circular imports and other misc code."""
 import os
 import sys
+import traceback
 from os import _exit as os_exit  # noqa
 from os import waitpid
 from pathlib import Path
@@ -53,10 +54,14 @@ def terminate_forked_build(app: Sphinx, exc: Optional[Exception]):
     :param app: Sphinx app instance
     :param exc: Exception during build if it failed.
     """
+    if exc:
+        print(traceback.format_exc())
+
     log = logging.getLogger(__file__)
-    log.info("%sChild process completed", LOGGING_PREFIX)
+    log.info("%sChild process %s", LOGGING_PREFIX, "failed" if exc else "completed")
     sys.stdout.flush()
     sys.stderr.flush()
+
     exit_status = 1 if exc else 0
     app.emit("multi-theme-child-before-exit", exit_status, exc)
     os_exit(exit_status)
