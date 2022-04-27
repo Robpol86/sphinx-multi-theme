@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Tuple
 
 import pytest
-from bs4 import BeautifulSoup, ResultSet
+from bs4 import BeautifulSoup, Tag
 
 
 class HTML:
@@ -27,14 +27,14 @@ class HTML:
         return BeautifulSoup(text, "html.parser")
 
     @property
-    def wrapper_p(self) -> ResultSet:
+    def wrapper_p(self) -> Tag:
         """Return toctree-wrapper (not in the sidebar) for the primary theme."""
         wrapper = self.primary_index.find_all("div", ["toctree-wrapper"])[1]
         assert wrapper.find_next("span").text == "MultiTheme"
         return wrapper
 
     @property
-    def wrapper_s(self) -> ResultSet:
+    def wrapper_s(self) -> Tag:
         """Return toctree-wrapper (not in the sidebar) for the secondary theme."""
         wrapper = self.secondary_index.find_all("div", ["toctree-wrapper"])[1]
         assert wrapper.find_next("span").text == "MultiTheme"

@@ -1,5 +1,0 @@
-=====
-Other
-=====
-
-Another page.

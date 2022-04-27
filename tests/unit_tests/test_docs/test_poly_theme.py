@@ -1,4 +1,5 @@
 """Tests."""
+import os
 import re
 import shutil
 import sys
@@ -12,7 +13,7 @@ from bs4 import BeautifulSoup
 
 
 @pytest.mark.usefixtures("skip_if_no_fork")
-@pytest.mark.sphinx("html", freshenv=True, testroot="poly-theme/fixture")
+@pytest.mark.sphinx("html", freshenv=True, testroot="poly-theme")
 def test(outdir: Path):
     """Test."""
     # Primary theme.
@@ -30,7 +31,7 @@ def test(outdir: Path):
 
 
 @pytest.mark.usefixtures("skip_if_no_fork", "sphinx_app")
-@pytest.mark.sphinx("html", freshenv=True, testroot="poly-theme/fixture")
+@pytest.mark.sphinx("html", freshenv=True, testroot="poly-theme")
 def test_logs(status: StringIO):
     """Verify child logs are present."""
     logs = status.getvalue().strip()
@@ -55,7 +56,7 @@ def test_logs(status: StringIO):
 @pytest.mark.usefixtures("skip_if_no_fork")
 @pytest.mark.parametrize("relative_src", [False, True])
 @pytest.mark.parametrize("relative_out", [False, True])
-@pytest.mark.sphinx("html", freshenv=True, testroot="poly-theme/subprocess")
+@pytest.mark.sphinx("html", freshenv=True, testroot="poly-theme")
 def test_dir_change(tmp_path: Path, app_params: Tuple[Dict, Dict], relative_src: bool, relative_out: bool):
     """Test."""
     srcdir = Path(app_params[1]["srcdir"])
@@ -69,8 +70,9 @@ def test_dir_change(tmp_path: Path, app_params: Tuple[Dict, Dict], relative_src:
         cmd = [sys.executable, "-m", "sphinx", "-T", "-n", "-W"]
         if doctreedir:
             cmd += ["-d", doctreedir]
+        env = dict(os.environ, TEST_IN_SUBPROCESS="TRUE")
         cmd += ["." if relative_src else srcdir, outdir.relative_to(srcdir) if relative_out else outdir]
-        output = check_output(cmd, stderr=STDOUT, cwd=srcdir)
+        output = check_output(cmd, env=env, stderr=STDOUT, cwd=srcdir)
         logs = output.decode("utf8").strip()
         return logs.splitlines()
 
