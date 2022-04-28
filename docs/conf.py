@@ -2,6 +2,7 @@
 # pylint: disable=invalid-name
 import time
 
+from sphinx_multi_theme import __version__ as version  # noqa
 from sphinx_multi_theme.theme import MultiTheme, Theme
 
 

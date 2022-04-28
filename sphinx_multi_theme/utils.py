@@ -57,7 +57,7 @@ def terminate_forked_build(app: Sphinx, exc: Optional[Exception]):
     if exc:
         print(traceback.format_exc())
 
-    log = logging.getLogger(__file__)
+    log = logging.getLogger(__name__)
     log.info("%sChild process %s", LOGGING_PREFIX, "failed" if exc else "completed")
     sys.stdout.flush()
     sys.stderr.flush()
@@ -93,7 +93,7 @@ def log_dir_change(label: str, old_dir: Path, new_dir: Path, depth: int):
     :param new_dir: New directory.
     :param depth: Include these many common parent directories.
     """
-    log = logging.getLogger(__file__)
+    log = logging.getLogger(__name__)
 
     common_prefix = Path(*os.path.commonprefix([old_dir.parts, new_dir.parts]))
     for _ in range(depth):
