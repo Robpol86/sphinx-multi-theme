@@ -121,6 +121,16 @@ def test_links(html: HTML):
     assert "current" in links_sub[1]["class"]
 
 
+@pytest.mark.sphinx("html", freshenv=True, testroot="toctree-directive/single")
+def test_single(outdir: Path):
+    """Test."""
+    for file_ in ("index.html", "other.html"):
+        html = BeautifulSoup((outdir / file_).read_text(encoding="utf8"), "html.parser")
+        assert "MultiTheme" not in html.text
+        assert "Primary" not in html.text
+        assert "Secondary" not in html.text
+
+
 @pytest.mark.usefixtures("skip_if_no_fork")
 @pytest.mark.sphinx("linkcheck", freshenv=True, testroot="toctree-directive/links")
 def test_linkcheck(app_params: Tuple[Dict, Dict]):

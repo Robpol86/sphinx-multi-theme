@@ -39,6 +39,9 @@ class MultiThemeTocTreeDirective(other.TocTree):
             log.warning("Extension not fully initialized: no multi-themes specified")
             self.options["hidden"] = True
             return []
+        if len(multi_theme.themes) < 2:
+            self.options["hidden"] = True
+            return []
 
         # Populate entries.
         entries: List[Tuple[str, str]] = toctree.setdefault("entries", [])
