@@ -53,6 +53,34 @@ def test_logs(status: StringIO):
     assert matches == expected
 
 
+@pytest.mark.keep_srcdir
+@pytest.mark.usefixtures("skip_if_no_fork")
+@pytest.mark.parametrize("second_run", [False, True])
+@pytest.mark.sphinx("epub", testroot="poly-theme")
+def test_unsupported(outdir: Path, status: StringIO, second_run: bool):
+    """Test."""
+    # Primary theme.
+    for file_ in ("index.xhtml", "other.xhtml"):
+        path = outdir / file_
+        assert path.exists()
+
+    # Secondary themes.
+    for theme in ("traditional", "alabaster"):
+        path = outdir / f"theme_{theme}"
+        leftover_file = path / "leftover_file.txt"
+        if not second_run:
+            assert not path.exists()
+            path.mkdir()
+            leftover_file.touch()
+        else:
+            assert leftover_file.exists()
+            assert [f.name for f in path.iterdir()] == [leftover_file.name]
+
+    logs = status.getvalue().strip()
+    assert logs.count("Unsupported builder 'epub', terminating child process") == 2  # child
+    assert logs.count("Unsupported builder 'epub', removing themes: ['traditional', 'alabaster']") == 1
+
+
 @pytest.mark.usefixtures("skip_if_no_fork")
 @pytest.mark.parametrize("relative_src", [False, True])
 @pytest.mark.parametrize("relative_out", [False, True])

@@ -7,6 +7,8 @@ from sphinx.util import logging
 from sphinx_multi_theme.theme import MultiTheme
 from sphinx_multi_theme.utils import CONFIG_NAME_INTERNAL_IS_CHILD
 
+
+copyright = "Robpol86 2022"  # noqa
 exclude_patterns = ["_build"]
 extensions = ["sphinx_multi_theme.multi_theme"]
 if os.environ.get("TEST_IN_SUBPROCESS") != "TRUE":
@@ -14,6 +16,7 @@ if os.environ.get("TEST_IN_SUBPROCESS") != "TRUE":
 master_doc = "index"
 nitpicky = True
 html_theme = MultiTheme(["classic", "traditional", "alabaster"])
+version = "0.0.0"
 
 
 def setup(app: Sphinx):

@@ -13,6 +13,8 @@ Example output file structure:
     docs/_build/html/theme_classic/index.html
 """
 import os
+import sys
+from os import _exit as os_exit  # noqa
 from typing import Dict, List, Tuple, Union
 
 from seedir import seedir
@@ -94,6 +96,38 @@ def flatten_html_theme(_: Sphinx, config: Config):
                     config[top_level_key][key] = active_theme_name
 
 
+def unsupported_builder_noop(app: Sphinx):
+    """Disable extension on unsupported builders.
+
+    :param app: Sphinx application.
+    """
+    if app.builder.name in utils.SUPPORTED_BUILDERS:
+        return
+    log = logging.getLogger(__name__)
+
+    if app.config[utils.CONFIG_NAME_INTERNAL_IS_CHILD]:
+        log.info("%sUnsupported builder %r, terminating child process", utils.LOGGING_PREFIX, app.builder.name)
+        sys.stdout.flush()
+        sys.stderr.flush()
+        try:
+            os.rmdir(app.outdir)
+        except OSError:
+            pass
+        try:
+            os.rmdir(app.doctreedir)
+        except OSError:
+            pass
+        app.emit("multi-theme-unsupported-builder-child-before-exit", app.builder, utils.SUPPORTED_BUILDERS)
+        os_exit(0)
+
+    multi_theme_instance = app.config[utils.CONFIG_NAME_INTERNAL_THEMES]
+    if multi_theme_instance:
+        removed = multi_theme_instance.truncate()
+        if removed:
+            removed_names = [t.name for t in removed]
+            log.info("%sUnsupported builder %r, removing themes: %r", utils.LOGGING_PREFIX, app.builder.name, removed_names)
+
+
 def print_files(app: Sphinx, exc: Exception):
     """Print outdir listing.
 
@@ -135,8 +169,10 @@ def setup(app: Sphinx) -> Dict[str, str]:
     app.add_event("multi-theme-after-fork-parent-child-running")
     app.add_event("multi-theme-before-fork")
     app.add_event("multi-theme-child-before-exit")
+    app.add_event("multi-theme-unsupported-builder-child-before-exit")
     app.add_node(MultiThemeTocTreeNode)
     app.connect("build-finished", print_files, priority=utils.SPHINX_CONNECT_PRIORITY_PRINT_FILES)
+    app.connect("builder-inited", unsupported_builder_noop, priority=utils.SPHINX_CONNECT_PRIORITY_UNSUPPORTED_BUILDER_NOOP)
     app.connect("config-inited", flatten_html_theme, priority=utils.SPHINX_CONNECT_PRIORITY_FLATTEN_HTML_THEME)
     app.connect("config-inited", fork_sphinx, priority=utils.SPHINX_CONNECT_PRIORITY_FORK_SPHINX)
     return dict(parallel_read_safe=True, parallel_write_safe=True, version=__version__)
