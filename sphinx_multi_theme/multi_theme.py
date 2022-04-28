@@ -32,7 +32,7 @@ def fork_sphinx(app: Sphinx, config: Config):
     :param app: Sphinx application.
     :param config: Sphinx configuration.
     """
-    log = logging.getLogger(__file__)
+    log = logging.getLogger(__name__)
     multi_theme_instance: Union[str, MultiTheme] = config["html_theme"]
 
     # Noop if MultiTheme not used or only one theme specified by the user.

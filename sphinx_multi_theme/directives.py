@@ -7,9 +7,9 @@ from sphinx import addnodes
 from sphinx.directives import other
 from sphinx.util import logging
 
+from sphinx_multi_theme import utils
 from sphinx_multi_theme.nodes import MultiThemeTocTreeNode
 from sphinx_multi_theme.theme import MultiTheme
-from sphinx_multi_theme.utils import CONFIG_NAME_INTERNAL_THEMES
 
 
 class MultiThemeTocTreeDirective(other.TocTree):
@@ -31,10 +31,10 @@ class MultiThemeTocTreeDirective(other.TocTree):
 
     def parse_content(self, toctree: addnodes.toctree) -> List[Node]:
         """Called by super().run()."""
-        log = logging.getLogger(__file__)
+        log = logging.getLogger(__name__)
 
         # Get MultiTheme instance.
-        multi_theme: Optional[MultiTheme] = self.config[CONFIG_NAME_INTERNAL_THEMES]
+        multi_theme: Optional[MultiTheme] = self.config[utils.CONFIG_NAME_INTERNAL_THEMES]
         if not multi_theme:
             log.warning("Extension not fully initialized: no multi-themes specified")
             self.options["hidden"] = True
