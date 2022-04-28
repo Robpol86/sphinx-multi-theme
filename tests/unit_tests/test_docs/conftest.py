@@ -43,8 +43,8 @@ def fork_exit_save_child_data(monkeypatch: MonkeyPatch):
         # Save Sphinx log statements.
         status: StringIO = app._status  # noqa pylint: disable=protected-access
         warning: StringIO = app._warning  # noqa pylint: disable=protected-access
-        status_file = os.path.join(app.outdir, "..", status_log_file_name)
-        warning_file = os.path.join(app.outdir, "..", warning_log_file_name)
+        status_file = os.path.join(os.path.dirname(app.outdir), status_log_file_name)
+        warning_file = os.path.join(os.path.dirname(app.outdir), warning_log_file_name)
         with open(status_file, "w", encoding="utf8") as handle:
             handle.write(status.getvalue())
         with open(warning_file, "w", encoding="utf8") as handle:
@@ -65,6 +65,7 @@ def fork_exit_save_child_data(monkeypatch: MonkeyPatch):
     def setup(app: Sphinx):
         app.connect("multi-theme-after-fork-child", truncate_logs_after_child_is_born)
         app.connect("multi-theme-child-before-exit", dump_logs_save_cov_before_child_is_killed)
+        app.connect("multi-theme-unsupported-builder-child-before-exit", dump_logs_save_cov_before_child_is_killed)
         app.connect("multi-theme-after-fork-parent-child-exited", merge_dumped_child_sphinx_logs_into_parent_sphinx_logs)
 
     conftest_fork_exit_save_child_data = ModuleType("conftest_fork_exit_save_child_data")
