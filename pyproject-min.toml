@@ -6,7 +6,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 name = "sphinx-multi-theme"
-version = "0.0.1"
+version = "1.0.0"
 description = "A Sphinx extension that builds copies of your docs using multiple themes into separate subdirectories."
 readme = "README.md"
 authors = ["Robpol86 <robpol86@gmail.com>"]
