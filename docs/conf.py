@@ -35,7 +35,7 @@ html_theme = MultiTheme(
 )
 
 
-# Options for sphinx-multi-theme.
+# https://sphinx-multi-theme.readthedocs.io
 multi_theme_print_files = True
 
 
