@@ -2,7 +2,7 @@
 # pylint: disable=invalid-name
 import time
 
-from sphinx_multi_theme import __version__ as version  # noqa
+from sphinx_multi_theme import __version__ as version
 from sphinx_multi_theme.theme import MultiTheme, Theme
 
 
@@ -21,6 +21,7 @@ extensions = [
 language = "en"
 project = "sphinx-multi-theme"
 pygments_style = "vs"
+release = version
 
 
 # Options for HTML output.
@@ -35,7 +36,7 @@ html_theme = MultiTheme(
 )
 
 
-# Options for sphinx-multi-theme.
+# https://sphinx-multi-theme.readthedocs.io
 multi_theme_print_files = True
 
 
