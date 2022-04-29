@@ -19,8 +19,8 @@ build:
       - poetry config virtualenvs.create false
     post_install:
       - poetry install
-#    pre_build:  # TODO uncomment after publishing to PyPI.
-#      - sphinx-build -W --keep-going -q -b linkcheck -d _build/doctrees docs/ _build/linkcheck
+    pre_build:
+      - sphinx-build -W --keep-going -q -b linkcheck -d _build/doctrees docs/ _build/linkcheck
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
