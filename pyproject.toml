@@ -46,6 +46,7 @@ Sphinx = [
     {version = "~5", python = "~3.9"},
     {version = "~4", python = "~3.8"},
 ]
+emoji = "*"
 # Linters.
 black = "*"
 flake8 = "*"
