@@ -34,21 +34,14 @@ documentation = "https://sphinx-multi-theme.readthedocs.io"
 repository = "https://github.com/Robpol86/sphinx-multi-theme"
 
 [tool.poetry.dependencies]
-python = "^3.7"
+python = ">=3.7"
 # Project dependencies.
 funcy = "*"
 seedir = "*"
-Sphinx = ">=4.0.0"  # min-toggle
-#Sphinx = [  # min-toggle
-#    {version = "~4.0", python = "^3.6,<3.8"},  # min-toggle
-#    {version = "~4.1", python = "^3.8,<3.10"},  # min-toggle
-#    {version = "~4.2", python = "^3.10"},  # min-toggle
-#]  # min-toggle
+Sphinx = "*"
 
 [tool.poetry.group.dev.dependencies]
-Sphinx = "^4.5"  # min-toggle
-# IDE.
-docutils-stubs = "*"
+Sphinx = {version = ">=6.0", python = ">=3.8"}
 # Linters.
 black = "*"
 flake8 = "*"
@@ -74,7 +67,7 @@ sphinxext-opengraph = "*"
 
 [tool.black]
 line-length = 125
-target-version = ["py36", "py37", "py38", "py39", "py310"]
+target-version = ["py37", "py38", "py39", "py310", "py311"]
 
 [tool.coverage.report]
 exclude_lines = [
