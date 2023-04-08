@@ -41,7 +41,11 @@ seedir = "*"
 Sphinx = "*"
 
 [tool.poetry.group.dev.dependencies]
-Sphinx = {version = ">=6.0", python = ">=3.8"}
+Sphinx = [
+    {version = ">=6.0", python = ">=3.10"},
+    {version = "~5", python = "~3.9"},
+    {version = "~4", python = "~3.8"},
+]
 # Linters.
 black = "*"
 flake8 = "*"
