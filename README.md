@@ -23,7 +23,7 @@ A Sphinx extension that builds copies of your docs using multiple themes into se
 
 ## Install
 
-Requires Python 3.6 or greater and Sphinx 4.0 or greater. Not supported on Windows.
+Requires Python 3.7 or greater and Sphinx 4.0 or greater. Not supported on Windows due to lack of forking.
 
 ```shell
 pip install sphinx-multi-theme
