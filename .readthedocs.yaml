@@ -14,8 +14,8 @@ build:
   jobs:
     pre_create_environment:
       - asdf plugin add poetry
-      - asdf install poetry 1.1.13  # TODO latest
-      - asdf global poetry 1.1.13  # TODO latest
+      - asdf install poetry latest
+      - asdf global poetry latest
       - poetry config virtualenvs.create false
     post_install:
       - poetry install
