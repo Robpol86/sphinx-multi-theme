@@ -18,6 +18,9 @@ build:
       - asdf global poetry latest
       - poetry config virtualenvs.create false
     post_install:
+      - printenv READTHEDOCS_VIRTUALENV_PATH
+      - ls -lah $READTHEDOCS_VIRTUALENV_PATH
+      - export VIRTUAL_ENV="$READTHEDOCS_VIRTUALENV_PATH"
       - which python
       - printenv |sort
       - which sphinx-build || true
