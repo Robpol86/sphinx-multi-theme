@@ -20,7 +20,7 @@ jobs:
     steps:
 
       - name: Check out repository code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Overwrite pyproject.toml and poetry.lock
         if: matrix.poetry-min
@@ -29,11 +29,22 @@ jobs:
           cp -v poetry{-min,}.lock
           git diff --color
 
-      - name: Initialize dependencies
-        uses: Robpol86/actions-init-deps-py@v3
+      - name: Install Poetry
+        shell: bash
+        # TODO latest poetry
+        run: pipx install poetry==1.1.13 && poetry config virtualenvs.in-project true
+
+      - name: Install Python
+        id: python
+        uses: actions/setup-python@v4
         with:
-          cache-buster: "${{ join(matrix.*, '|') }}"
           python-version: "${{ matrix.python }}"
+          cache: poetry
+
+      - name: Install dependencies
+        shell: bash
+        if: steps.python.outputs.cache-hit != 'true'
+        run: poetry install
 
       - name: Run tests
         env:
@@ -41,7 +52,7 @@ jobs:
         run: make test
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           name: "coverage-${{ runner.os }}-${{ join(matrix.*, '|') }}"
 
