@@ -21,8 +21,9 @@ build:
       - which sphinx-build || true
       - poetry install
       - which sphinx-build
+      - poetry run which sphinx-build || true
     pre_build:
-      - sphinx-build -W --keep-going -q -b linkcheck -d _build/doctrees docs/ _build/linkcheck
+      - poetry run sphinx-build -W --keep-going -q -b linkcheck -d _build/doctrees docs/ _build/linkcheck
 
 # Build documentation in the docs/ directory with Sphinx
 sphinx:
