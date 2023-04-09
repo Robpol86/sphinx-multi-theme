@@ -18,7 +18,9 @@ build:
       - asdf global poetry latest
       - poetry config virtualenvs.create false
     post_install:
+      - which sphinx-build || true
       - poetry install
+      - which sphinx-build
     pre_build:
       - sphinx-build -W --keep-going -q -b linkcheck -d _build/doctrees docs/ _build/linkcheck
 
