@@ -18,6 +18,8 @@ build:
       - asdf global poetry latest
       - poetry config virtualenvs.create false
     post_install:
+      - which python
+      - printenv |sort
       - which sphinx-build || true
       - poetry install
       - which sphinx-build
