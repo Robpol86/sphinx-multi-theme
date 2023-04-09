@@ -24,11 +24,11 @@ build:
       - poetry run which sphinx-build || true
     pre_build:
       - poetry config --list
+      - poetry env info
       - sphinx-build --version
       - poetry run sphinx-build --version
       - python -m sphinx --version
       - poetry run python -m sphinx --version
-      - poetry run python -c 'print(__import__("sphinx").__file__)'
       - sphinx-build -W --keep-going -q -b linkcheck -d _build/doctrees docs/ _build/linkcheck
 
 # Build documentation in the docs/ directory with Sphinx
