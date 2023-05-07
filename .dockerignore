@@ -1,0 +1,8 @@
+.venv/
+.git/
+.pytest_cache/
+dist/
+htmlcov/
+Dockerfile
+.dockerignore
+.readthedocs.yaml
