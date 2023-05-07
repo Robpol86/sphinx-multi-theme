@@ -46,6 +46,11 @@ Sphinx = [
     {version = "~5", python = "~3.9"},
     {version = "~4", python = "~3.8"},
 ]
+numpy = [
+    {version = "1.24.3", python = ">=3.8"},
+    {version = "*", python = "<3.8"},
+]  # TODO f this, ditch poetry for library projects, go back to pip-tools
+# TODO: also fix codecov, the gh app isn't working, probably revert to a gh action for now
 # Linters.
 black = "*"
 flake8 = "*"
