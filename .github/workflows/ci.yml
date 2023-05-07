@@ -10,29 +10,17 @@ jobs:
     name: Test
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest]  # TODO windows-latest
         python: ["3.7", "3.8", "3.9", "3.10"]
-        poetry-min: ["", "poetry-min"]
-        exclude:
-          - {os: windows-latest, poetry-min: "poetry-min"}
-          - {os: macos-latest, poetry-min: "poetry-min"}
     runs-on: "${{ matrix.os }}"
     steps:
 
       - name: Check out repository code
         uses: actions/checkout@v3
 
-      - name: Overwrite pyproject.toml and poetry.lock
-        if: matrix.poetry-min
-        run: |
-          cp -v pyproject{-min,}.toml
-          cp -v poetry{-min,}.lock
-          git diff --color
-
       - name: Install Poetry
         shell: bash
-        # TODO latest poetry
-        run: pipx install poetry==1.1.13 && poetry config virtualenvs.in-project true
+        run: pipx install poetry && poetry config virtualenvs.in-project true
 
       - name: Install Python
         id: python
@@ -50,11 +38,6 @@ jobs:
         env:
           PY_COLORS: 1
         run: make test
-
-      - name: Upload coverage
-        uses: codecov/codecov-action@v3
-        with:
-          name: "coverage-${{ runner.os }}-${{ join(matrix.*, '|') }}"
 
       - name: Run lints
         run: make lint

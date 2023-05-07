@@ -12,10 +12,12 @@ build:
   os: ubuntu-20.04
   tools: {python: "3.10"}
   jobs:
-    post_create_environment:
-      - pip install poetry
-      - poetry config virtualenvs.create false
+    pre_create_environment:
+      - asdf plugin add poetry
+      - asdf install poetry latest
+      - asdf global poetry latest
     post_install:
+      - ln -s $READTHEDOCS_VIRTUALENV_PATH .venv
       - poetry install
     pre_build:
       - sphinx-build -W --keep-going -q -b linkcheck -d _build/doctrees docs/ _build/linkcheck
