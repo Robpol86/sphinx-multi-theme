@@ -1,5 +1,5 @@
 [build-system]
-requires = ["poetry_core>=1.0.0"]
+requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
@@ -13,12 +13,10 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Environment :: MacOS X",
     "Environment :: Plugins",
-    "Environment :: Win32 (MS Windows)",
     "Framework :: Sphinx :: Extension",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: BSD License",
     "Operating System :: MacOS :: MacOS X",
-    "Operating System :: Microsoft :: Windows",
     "Operating System :: POSIX :: Linux",
     "Operating System :: POSIX",
     "Programming Language :: Python :: 3 :: Only",
@@ -26,7 +24,7 @@ classifiers = [
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
-    # "Programming Language :: Python :: 3.11",  # TODO
+    "Programming Language :: Python :: 3.11",
     "Topic :: Documentation :: Sphinx",
     "Topic :: Software Development :: Documentation",
 ]
@@ -36,32 +34,33 @@ documentation = "https://sphinx-multi-theme.readthedocs.io"
 repository = "https://github.com/Robpol86/sphinx-multi-theme"
 
 [tool.poetry.dependencies]
-python = ">=3.6"
+python = ">=3.7"
 # Project dependencies.
-dataclasses = {version = "*", python = "<3.7"}
 funcy = "*"
 seedir = "*"
-Sphinx = ">=4.0.0"
+Sphinx = "*"
 
-[tool.poetry.dev-dependencies]
-Sphinx = {version = "^4.5", python = "^3.6"}
-# IDE.
-docutils-stubs = "*"
+[tool.poetry.group.dev.dependencies]
+Sphinx = [
+    {version = ">=6.0", python = ">=3.10"},
+    {version = "~5", python = "~3.9"},
+    {version = "~4", python = "~3.8"},
+]
 # Linters.
-black = {version = "*", python = "^3.6.2"}
-flake8 = {version = "*", python = "^3.6"}
+black = "*"
+flake8 = "*"
 flake8-docstrings = "*"
-flake8-import-order = {version = "*", python = "^3.6"}
-pep8-naming = {version = "*", python = "^3.6"}
-pylint = {version = "*", python = "^3.6"}
+flake8-import-order = "*"
+pep8-naming = "*"
+pylint = "*"
 # Tests.
 beautifulsoup4 = "*"
 coverage = {version = "*", extras = ["toml"]}
-myst-parser = {version = "*", python = "^3.6"}
+myst-parser = "*"
 pytest = "*"
 pytest-cov = "*"
 pytest-icdiff = "*"
-readthedocs-sphinx-ext = {version = "*", python = "^3.6"}
+readthedocs-sphinx-ext = "*"
 # Docs.
 sphinx-autobuild = "*"
 sphinx-copybutton = "*"
@@ -72,7 +71,7 @@ sphinxext-opengraph = "*"
 
 [tool.black]
 line-length = 125
-target-version = ["py37", "py38", "py39", "py310"]  # TODO "py311"
+target-version = ["py37", "py38", "py39", "py310", "py311"]
 
 [tool.coverage.report]
 exclude_lines = [
