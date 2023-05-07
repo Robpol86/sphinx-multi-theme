@@ -72,7 +72,7 @@ sphinxext-opengraph = "*"
 
 [tool.black]
 line-length = 125
-target-version = ["py37", "py38", "py39", "py310", "py311"]
+target-version = ["py37", "py38", "py39", "py310"]  # TODO "py311"
 
 [tool.coverage.report]
 exclude_lines = [
