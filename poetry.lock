@@ -360,6 +360,20 @@ files = [
 ]
 
 [[package]]
+name = "emoji"
+version = "2.2.0"
+description = "Emoji for Python"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
+    {file = "emoji-2.2.0.tar.gz", hash = "sha256:a2986c21e4aba6b9870df40ef487a17be863cb7778dcf1c01e25917b7cd210bb"},
+]
+
+[package.extras]
+dev = ["coverage", "coveralls", "pytest"]
+
+[[package]]
 name = "exceptiongroup"
 version = "1.1.1"
 description = "Backport of PEP 654 (exception groups)"
@@ -1558,6 +1572,7 @@ files = [
 ]
 
 [package.dependencies]
+emoji = {version = "*", optional = true, markers = "extra == \"emoji\""}
 natsort = "*"
 
 [package.extras]
@@ -2203,4 +2218,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.7"
-content-hash = "4b7cfbe4dd0cb4c5cd664a5b7b51ed07d64344e4aeb857e7f52d7f99140e746d"
+content-hash = "24e3143a724abf9e40117d7f2a1824494e490481e1c9266ad8d9806a760599b4"
