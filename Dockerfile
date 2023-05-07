@@ -9,7 +9,7 @@ ENV PATH=/home/docs/checkouts/readthedocs.org/user_builds/sphinx-multi-theme/env
 RUN asdf plugin add poetry
 RUN asdf install poetry latest
 RUN asdf global poetry latest
-RUN poetry config virtualenvs.create false
+RUN ln -s $READTHEDOCS_VIRTUALENV_PATH .venv
 
 RUN python -mvenv $READTHEDOCS_VIRTUALENV_PATH
 RUN python -m pip install --upgrade --no-cache-dir pip setuptools

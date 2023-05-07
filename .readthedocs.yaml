@@ -13,12 +13,11 @@ build:
   tools: {python: "3.10"}
   jobs:
     pre_create_environment:
-      - printenv PATH
       - asdf plugin add poetry
       - asdf install poetry latest
       - asdf global poetry latest
-      - poetry config virtualenvs.create false
     post_install:
+      - ln -s $READTHEDOCS_VIRTUALENV_PATH .venv
       - poetry install
     pre_build:
       - sphinx-build -W --keep-going -q -b linkcheck -d _build/doctrees docs/ _build/linkcheck
