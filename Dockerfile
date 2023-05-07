@@ -5,6 +5,7 @@ WORKDIR /home/docs/checkouts/readthedocs.org/user_builds/sphinx-multi-theme/chec
 RUN asdf install python 3.10.8
 RUN asdf global python 3.10.8
 
+ENV PATH=/home/docs/checkouts/readthedocs.org/user_builds/sphinx-multi-theme/envs/40/bin:/home/docs/.asdf/shims:/home/docs/.asdf/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RUN asdf plugin add poetry
 RUN asdf install poetry latest
 RUN asdf global poetry latest
